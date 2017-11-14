@@ -1,37 +1,28 @@
-## Welcome to GitHub Pages
+## Project: Etymology graph for English dictionary
 
-You can use the [editor on GitHub](https://github.com/Nevaada/Project-Etymology-graph/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+This is the page for our project for the course Data Visualization (COM-430).
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Group members
+* Christopher Benz
+* Pierre Mahmoud-Lamy
+* Nicolas Pradignac
 
-### Markdown
+### Decription
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+We intend to create an interactive representation of the etymology of the english dictionary.
+The global design idea would be to have an interactive graph of the etymology (nodes:=words, links:=etymology or derived form) along with a navigational search part to look for the etymology of a specific word/ look for the words derived from one common root.
+The goal is to nicely visualize the complex intertwining of the different languages and to highlight the various origins of the english language.
 
-```markdown
-Syntax highlighted code block
+### Dataset
 
-# Header 1
-## Header 2
-### Header 3
+The database comes from the site [Etymological Wordnet](http://www1.icsi.berkeley.edu/~demelo/etymwn/), and has originally been used in a project of Gerard de Melo which goal was to create an API to query the etymology of an input word.
 
-- Bulleted
-- List
+An entry of the dataset is of the form (l1:w1 e l2:w2) and means 'word w1 from language l1 has a link e with word w2 from language l2'.
 
-1. Numbered
-2. List
+Here are some examples of the possible entries:
+* (eng:defeat etymology fra:défaire) means 'defeat (eng) has for etymology défaire (fra)'
+* (fra:défaire etymology_origin_of eng:defeat) means the same thing
+* (eng:defeated is_derived_from eng:defeat) means 'defeated (eng) is a derived form of defeat (eng)'
+* (eng:defeat has_derived_form eng:defeated) means the same thing
 
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Nevaada/Project-Etymology-graph/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Note: the l1, l2 codes for languages respect the [ISO 639-3](https://en.wikipedia.org/wiki/ISO_639-3) code for the representation of names of languages.
