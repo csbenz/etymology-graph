@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	{% include head.html %}
+  </head>
+
+  <body>
+    <header>
+      {% include header.html %}
+    </header>
+
+    <div class="title_div">
+      <div class="title_div_txt">
+        <h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1><br />
+        <h2>{{ page.date | date: '%B %d, %Y' }}</h2>
+      </div>
+    </div>
+
+	
+	
+	<main class="core_div">
+		<div class="post_nav">Go back to <a " href="{{ site.baseurl }}/posts">Posts</a></div>
+		
+        {{ content }}
+		
+		<div class="post_nav">
+		  {% if page.previous.url %}
+			<a class="post_prev" href="{{ page.previous.url | prepend:site.baseurl }}">&laquo; Previous</a>
+		  {% endif %}
+		  {% if page.next.url %}
+			<a class="post_next" href="{{ page.next.url | prepend:site.baseurl }}">Next &raquo;</a>
+		  {% endif %}
+		</div>
+	
+	</main>
+
+  </body>
+ 
+   <footer>
+	{% include footer.html %}
+  </footer>
+  
+</html>
