@@ -8,9 +8,16 @@
   <title>Etymology graph</title>
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
-  <body> 
+  <body>
+    <div id="input_div" >
+      <form action="javascript:handleInput(search_word.value)">
+        Search word: <input type="text" id ="search_word">
+        <input type="submit" value="Submit">
+      </form>
+      </div>
   	<div id="input_container"/>
   	<div id="viz" class="svg-container" />
+    
    
     
   </body>
