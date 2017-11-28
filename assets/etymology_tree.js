@@ -1,5 +1,20 @@
 //import * as d3 from 'd3';
 
+
+
+function handleInput(data) {
+    search_root_word(this.value);
+
+    console.log(ancestorMap);
+    console.log(equivalentMap);
+    console.log(wordNameMap);
+
+   // showTreeRecur([rootWord], 0);
+
+    let jsonTree = createJSONChild(rootWord);
+    console.log(JSON.stringify(jsonTree));
+}
+
 const MAX_DEPTH = 11;
 
 var rootWord = "";
@@ -245,16 +260,4 @@ function createJSONChild(word) {
 }
 
 
-function handleInput(data) {
-    search_root_word(this.value);
-
-    console.log(ancestorMap);
-    console.log(equivalentMap);
-    console.log(wordNameMap);
-
-   // showTreeRecur([rootWord], 0);
-
-    let jsonTree = createJSONChild(rootWord);
-    console.log(JSON.stringify(jsonTree));
-}
 
