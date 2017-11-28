@@ -8,7 +8,7 @@ var i = 0,
 
 var tree = d3.layout.tree()
     .size([height, width]);
-
+console.log('loaded tree obj');
 var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
@@ -20,6 +20,10 @@ var svg = d3.select("body").append("svg")
 
 // Call this to display the graph
 function display_vizu(json_file) {
+    
+  if(tree == null) {
+   console.log('tree null!');   
+  }
   root = json_file;
   root.x0 = height / 2;
   root.y0 = 0;
