@@ -6,7 +6,7 @@ var i = 0,
     duration = 750,
     root;
 
-var tree = d3.tree()
+var tree = d3.layout.tree()
     .size([height, width]);
 console.log('loaded tree obj');
 var diagonal = d3.svg.diagonal()
