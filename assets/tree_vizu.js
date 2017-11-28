@@ -18,10 +18,9 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("flare.json", function(error, flare) {
-  if (error) throw error;
-
-  root = flare;
+// Call this to display the graph
+function display_vizu(json_file) {
+  root = json_file;
   root.x0 = height / 2;
   root.y0 = 0;
 
@@ -35,7 +34,8 @@ d3.json("flare.json", function(error, flare) {
 
   root.children.forEach(collapse);
   update(root);
-});
+}
+
 
 d3.select(self.frameElement).style("height", "800px");
 
