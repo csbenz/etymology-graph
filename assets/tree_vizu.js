@@ -21,7 +21,7 @@ var i = 0,
 // declares a tree layout and assigns the size
 var treemap = d3.tree().size([height, width]);
 
-function display_tree(json_tree) {
+function display_vizu(json_tree) {
     // Assigns parent, children, height, depth
     root = d3.hierarchy(json_tree, function(d) { return d.children; });
     root.x0 = height / 2;
