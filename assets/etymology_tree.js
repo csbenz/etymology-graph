@@ -21,6 +21,8 @@ var AncestorTree = [];
 
 var treatedWords = [];
 
+var jsonTree = [];
+
 function addAncestor(short_url, ancestor) {
   ancestorMap[short_url] = ancestorMap[short_url] || [];
   ancestorMap[short_url].push(ancestor);
@@ -75,6 +77,7 @@ function search_root_word(word) {
   wordNameMap = {};
   AncestorTree = [];
   treatedWords = [];
+  jsonTree = [];
 
   // Let's go babe
   search_url(short_url, 0);
@@ -192,8 +195,10 @@ function showTreeRecur(words, deepness) {
     treatedWords.push(word);
 
     console.log(tabs + 'WORD: ' + wordNameMap[word]);
+
     let equs = getEquivalents(word, []);
     console.log(tabs + 'equivalent words: ' + equs.map(x => wordNameMap[x]));
+
     let ancestors = getDirectAncestorsMany(equs);
     console.log(tabs + 'ancestors: ' + ancestors.map(x => wordNameMap[x]));
 
@@ -201,6 +206,43 @@ function showTreeRecur(words, deepness) {
   });
 }
 
+
+function createJSONChild(word) {
+  if(!word) {
+    return [];
+  }
+
+  let equs = getEquivalents(word, []);
+
+  let item = {};
+  item ["name"] = equs.map(x => wordNameMap[x]).toString();
+  
+  let ancestors = getDirectAncestorsMany(equs);
+
+  let childrenArray = [];
+  ancestors.forEach(function(equ) {
+    
+    if(treatedWords.includes(equ)) {
+      return;
+    }
+    treatedWords.push(equ);
+    
+    let child = createJSONChild(equ);
+    if(child) {
+      childrenArray.push(child);
+    }
+  });
+
+  item["children"] = childrenArray;
+
+  // Add only if not empty
+  if(childrenArray.length > 0) {
+    return item;
+  } else {
+    return [];
+  }
+  
+}
 
 
 function handleInput(data) {
@@ -210,18 +252,9 @@ function handleInput(data) {
     console.log(equivalentMap);
     console.log(wordNameMap);
 
-    showTreeRecur([rootWord], 0);
+   // showTreeRecur([rootWord], 0);
+
+    let jsonTree = createJSONChild(rootWord);
+    console.log(JSON.stringify(jsonTree));
 }
 
-export function createInputField() {
-
-  var inputElement = document.createElement("input");
-  inputElement.type = "text";
-
-  inputElement.addEventListener("change", handleInput, false);
-  
-  
-  var parent = document.getElementById("input_container");
-  parent.appendChild(inputElement);
-
-}
