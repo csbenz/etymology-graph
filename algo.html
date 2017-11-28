@@ -9,10 +9,13 @@
 </head>
   <body>
     <div id="input_div" >
-      <form action="javascript:;" onsubmit="handleInput(search_word.value)">
-        Search word: <input type="text" name="search_word" id="search_word">
-        <input type="submit" value="Submit">
+      
+      <form name="myForm" action="javascript:;"
+      onsubmit="handleInput(search_word.value)" method="post">
+      Search word: <input type="text" name="search_word">
+      <input type="submit" value="Submit">
       </form>
+      
       </div>
   	<div id="input_container"></div>
   	<div id="viz" class="svg-container"></div>
