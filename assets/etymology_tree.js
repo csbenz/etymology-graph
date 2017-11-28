@@ -112,7 +112,7 @@ function search_url(short_url, deepness) {
   traversedWords.push(short_url);
 
   let part1 = 'https://etytree-virtuoso.wmflabs.org/sparql?query=define%20sql%3Adescribe-mode%20%22CBD%22%20%20DESCRIBE%20%3Chttp%3A%2F%2F';
-  let part2 = short_url.substring(7); // remove http:// at beginning of string
+  let part2 = short_url.substring(8); // remove https:// at beginning of string
   let part3 = '%3E&output=text%2Fcsv';
   let url = part1 + part2 + part3;
 
