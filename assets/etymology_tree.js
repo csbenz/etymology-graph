@@ -10,6 +10,8 @@ function handleInput(data) {
 
     let jsonTree = createJSONChild(rootWord);
     console.log(JSON.stringify(jsonTree));
+    
+    display_vizu(jsonTree);
 }
 
 const MAX_DEPTH = 11;
