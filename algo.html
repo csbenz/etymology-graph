@@ -1,25 +1,18 @@
-<!doctype html>
-<html>
-<head>
-  <script type="text/javascript" src="etymology_tree.js"></script>
-  <meta charset="UTF-8">
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Etymology graph</title>
-  <link rel="stylesheet" type="text/css" href="main.css">
-</head>
-  <body>
-    <div id="input_div" >
+---
+layout: page
+title: Algorithm
+description: Etymology Graph
+---
+
+
+
+<div id="input_div" >
+     
+    <form name="myForm" action="javascript:handleInput(search_word.value)">
+    Search word: <input type="text" name="search_word">
+    <input type="submit" value="Submit">
+    </form>
       
-      <form name="myForm" action="javascript:handleInput(search_word.value)">
-      Search word: <input type="text" name="search_word">
-      <input type="submit" value="Submit">
-      </form>
-      
-      </div>
-  	<div id="input_container"></div>
-  	<div id="viz" class="svg-container"></div>
-   
-    
-  </body>
-</html>
+</div>
+<div id="input_container"></div>
+<div id="viz" class="svg-container"></div>
