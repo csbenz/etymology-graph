@@ -115,13 +115,16 @@ function search_url(short_url, deepness) {
   let part3 = '%3E&output=text%2Fcsv';
   let url = part1 + part2 + part3;
 
-  //console.log(url);
+  console.log(url);
 
   var request = createCORSRequest("get", url);
   if (request){
+      console.log('we are here');
       request.onload = function(){
           let aa = d3.csvParse(request.responseText);
+          console.log(aa);
           aa.forEach(function(d) {
+                console.log(d);
 
                  if(d.predicate.includes('label')) {
                     let word_name = d.object;
