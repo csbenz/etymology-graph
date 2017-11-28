@@ -1,4 +1,5 @@
-import * as d3 from 'd3';
+//import * as d3 from 'd3';
+var d3 = require("d3");
 
 const MAX_DEPTH = 11;
 
