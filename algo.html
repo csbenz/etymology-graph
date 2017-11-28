@@ -1,18 +1,19 @@
----
-layout: page
-title: Posts
-description: All different news on the project
----
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Etymology graph</title>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+  <body> 
+  	<div id="input_container"/>
+  	<div id="viz" class="svg-container" />
 
-<ul class="post_ul">
-  {% for post in site.posts %}
-    <li class="post_li">
-      <a  class="post_link" href="{{ post.url | prepend:site.baseurl }}">{{ post.title }}</a>
-	  <div class="post_div_info">
-	    <p class="post_description">"{{ post.description }}"</p>
-	    <p class="post_info">{{ post.date | date: '%B %d, %Y' }}<br />
-	    posted by {{ post.author }}</p>
-	  </div>
-    </li>
-  {% endfor %}
-</ul>
+    <script type="text/javascript" src="bundle.js"></script>
+	
+   
+    
+  </body>
+</html>
