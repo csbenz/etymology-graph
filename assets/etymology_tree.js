@@ -3,7 +3,8 @@
 
 
 function handleInput(data) {
-    search_root_word(this.value);
+    console.log(data);
+    search_root_word(data);
 
     console.log(ancestorMap);
     console.log(equivalentMap);
