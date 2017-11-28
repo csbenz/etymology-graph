@@ -1,9 +1,5 @@
-//import * as d3 from 'd3';
-
-
 
 function handleInput(data) {
-    console.log(data);
     search_root_word(data);
 
     console.log(ancestorMap);
@@ -120,12 +116,9 @@ function search_url(short_url, deepness) {
 
   var request = createCORSRequest("get", url);
   if (request){
-      console.log('we are here');
       request.onload = function(){
           let aa = d3.csvParse(request.responseText);
-          console.log(aa);
           aa.forEach(function(d) {
-                console.log(d);
 
                  if(d.predicate.includes('label')) {
                     let word_name = d.object;
