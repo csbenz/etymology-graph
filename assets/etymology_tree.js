@@ -237,24 +237,27 @@ function createJSONChild(word) {
   ancestors.forEach(function(equ) {
     
     if(treatedWords.includes(equ)) {
-      return;
+      return [];
     }
     treatedWords.push(equ);
     
     let child = createJSONChild(equ);
+    console.log(equ);
+    console.log(child);
+    console.log(child.length);
     if(child) {
+      //console.log(child);
       childrenArray.push(child);
     }
   });
 
-  item["children"] = childrenArray;
-
-  // Add only if not empty
+  console.log('children array: '  + childrenArray);
   if(childrenArray.length > 0) {
-    return item;
-  } else {
-    return [];
+    item["children"] = childrenArray;
   }
+
+  return item;
+}
   
 }
 
