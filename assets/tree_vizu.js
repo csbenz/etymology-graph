@@ -4,8 +4,6 @@ var margin = {top: 20, right: 90, bottom: 30, left: 90},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-console.log(width);
-console.log(height);
 
 // append the svg object to the body of the page
 // appends a 'group' element to 'svg'
@@ -25,7 +23,6 @@ var i = 0,
 var treemap = d3.tree().size([height, width]);
 
 function display_vizu(json_tree) {
-    console.log('display_vizu');
     // Assigns parent, children, height, depth
     root = d3.hierarchy(json_tree, function(d) { return d.children; });
     root.x0 = height / 2;
@@ -35,7 +32,6 @@ function display_vizu(json_tree) {
     root.children.forEach(collapse);
 
     update(root);
-    console.log('updated vizu');
 }
 
 // Collapse the node and all it's children
@@ -186,6 +182,5 @@ function update(source) {
       }
     update(d);
   }
-    
-    console.log('end update');
+
 }
