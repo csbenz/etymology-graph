@@ -27,13 +27,13 @@ svg.append("svg:defs").selectAll("marker")
   .enter().append("svg:marker")
     .attr("id", String)
     .attr("viewBox", "0 -5 10 10")
-    .attr("refX", 16)
+    .attr("refX", 17)
     .attr("refY", 0)
-    .attr("markerWidth", 8)
-    .attr("markerHeight", 8)
+    .attr("markerWidth", 7)
+    .attr("markerHeight", 7)
     .attr("orient", "auto")
   .append("svg:path")
-    .attr("d", "M0,-5L10,0L0,5").style('fill', '#999');
+    .attr("d", "M0,-5L10,0L0,5").style('fill', '#CCC');
 
 // declares a tree layout and assigns the size
 var treemap = d3.tree().size([height, width]);
