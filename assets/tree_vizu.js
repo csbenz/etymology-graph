@@ -9,8 +9,10 @@ var margin = {top: 20, right: 90, bottom: 30, left: 90},
 // appends a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
 var svg = d3.select(".core_div").append("svg")
-    .attr("width", width + margin.right + margin.left)
-    .attr("height", height + margin.top + margin.bottom)
+    //.attr("width", width + margin.right + margin.left)
+    //.attr("height", height + margin.top + margin.bottom)
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0 0 960 500")
   .append("g")
     .attr("transform", "translate("
           + margin.left + "," + margin.top + ")");
