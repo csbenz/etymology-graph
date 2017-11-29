@@ -258,8 +258,7 @@ function createJSONChild(word) {
 
   return item;
 }
-  
-}
+
 
 
 
