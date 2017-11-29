@@ -21,6 +21,20 @@ var i = 0,
     duration = 750,
     root;
 
+// Arrow
+svg.append("svg:defs").selectAll("marker")
+    .data(["end"])
+  .enter().append("svg:marker")
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 16)
+    .attr("refY", 0)
+    .attr("markerWidth", 8)
+    .attr("markerHeight", 8)
+    .attr("orient", "auto")
+  .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5").style('fill', '#999');
+
 // declares a tree layout and assigns the size
 var treemap = d3.tree().size([height, width]);
 
@@ -141,7 +155,8 @@ function update(source) {
       .attr('d', function(d){
         var o = {x: source.x0, y: source.y0}
         return diagonal(o, o)
-      });
+      })
+      .attr("marker-end", "url(#end)");
 
   // UPDATE
   var linkUpdate = linkEnter.merge(link);
