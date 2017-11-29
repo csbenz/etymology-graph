@@ -1,10 +1,13 @@
 
+//enter with this function and the word the user submitted
 function handleInput(data) {
     search_root_word(data);
 
     console.log(ancestorMap);
     console.log(equivalentMap);
     console.log(wordNameMap);
+
+    //load_language_code_map();
 
    // showTreeRecur([rootWord], 0);
 
@@ -35,7 +38,51 @@ var AncestorTree = [];
 
 var treatedWords = [];
 
-var jsonTree = [];
+var languageCodeMap = load_language_code_map();
+
+//var languageCodeMap = load_language_code_map();
+
+/*
+function load_language_code_map(allText) {
+    var allTextLines = allText.split(/\r\n|\n/);
+    var headers = allTextLines[0].split(',');
+    var lines = [];
+
+    for (var i=1; i<allTextLines.length; i++) {
+        var data = allTextLines[i].split(',');
+        if (data.length == headers.length) {
+
+            var language_code = data[1];
+            var language_name = date[2];
+
+            languageCodeMap[language_code] = language_name;
+
+        }
+    }
+}
+*/
+
+function load_language_code_map() {
+  var map = {};
+
+  var psv = d3.dsvFormat(";");
+  d3.text("./assets/language_codes.csv",function(error, rows){
+    if (error) {
+      throw error;
+    }
+    
+    var rowss = psv.parse(rows);
+    rowss.forEach(function(line) {
+      var language_code = line['code'];
+      var language_name = line['canonical name'];
+
+      map[language_code] = language_name;
+    });
+
+  });
+
+  return map;
+}
 
 function addAncestor(short_url, ancestor) {
   ancestorMap[short_url] = ancestorMap[short_url] || [];
@@ -91,7 +138,6 @@ function search_root_word(word) {
   wordNameMap = {};
   AncestorTree = [];
   treatedWords = [];
-  jsonTree = [];
 
   // Let's go babe
   search_url(short_url, 0);
@@ -114,10 +160,13 @@ function search_url(short_url, deepness) {
   let part3 = '%3E&output=text%2Fcsv';
   let url = part1 + part2 + part3;
 
-  console.log(url);
+  //console.log(url);
+  //d3.text("language_codes.csv").get();
+  //languageCodeMap = load_language_code_map();
 
   var request = createCORSRequest("get", url);
   if (request){
+
       request.onload = function(){
           let aa = d3.csvParse(request.responseText);
           aa.forEach(function(d) {
@@ -227,9 +276,14 @@ function createJSONChild(word) {
 
   let equs = getEquivalents(word, []);
 
+  language_code = get_language_code(word);
+
   let item = {};
-  item["name"] = equs.map(x => wordNameMap[x]).toString();
-  item["language"] = get_language_code(word);
+  item["name"] = equs.map(x => wordNameMap[x]).join(", ") + " [" + language_code + "]";
+  item["language_code"] = language_code;
+  item["language_name"] = languageCodeMap[language_code];
+  console.log(language_code);
+  console.log(languageCodeMap[language_code]);
   
   let ancestors = getDirectAncestorsMany(equs);
 
@@ -248,7 +302,6 @@ function createJSONChild(word) {
     }
   });
 
-  console.log('children array: '  + childrenArray);
   if(childrenArray.length > 0) {
     item["children"] = childrenArray;
   }
