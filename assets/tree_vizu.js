@@ -84,7 +84,10 @@ function update(source) {
   nodeEnter.append('text')
       .attr("dy", ".35em")
       .attr("x", function(d) {
-          return d.children || d._children ? -13 : -13; // posiiton of label text from node center
+          return d.children || d._children ? -13 : -13;
+      })
+      .attr("y", function(d) {
+          return d.children || d._children ? -10 : -10;
       })
       .attr("text-anchor", function(d) {
           return d.children || d._children ? "end" : "end";
