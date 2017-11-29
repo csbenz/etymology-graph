@@ -40,30 +40,9 @@ var treatedWords = [];
 
 var languageCodeMap = load_language_code_map();
 
-//var languageCodeMap = load_language_code_map();
-
-/*
-function load_language_code_map(allText) {
-    var allTextLines = allText.split(/\r\n|\n/);
-    var headers = allTextLines[0].split(',');
-    var lines = [];
-
-    for (var i=1; i<allTextLines.length; i++) {
-        var data = allTextLines[i].split(',');
-        if (data.length == headers.length) {
-
-            var language_code = data[1];
-            var language_name = date[2];
-
-            languageCodeMap[language_code] = language_name;
-
-        }
-    }
-}
-*/
-
 function load_language_code_map() {
   var map = {};
+  map['eng'] = "English";
 
   var psv = d3.dsvFormat(";");
   d3.text("./assets/language_codes.csv",function(error, rows){
@@ -276,14 +255,14 @@ function createJSONChild(word) {
 
   let equs = getEquivalents(word, []);
 
-  language_code = get_language_code(word);
+  let language_code = get_language_code(word);
+  let language_name = languageCodeMap[language_code];
 
   let item = {};
-  item["name"] = equs.map(x => wordNameMap[x]).join(", ") + " [" + language_code + "]";
+  item["name"] = equs.map(x => wordNameMap[x]).join(", ") + " [" + language_name + "]";
   item["language_code"] = language_code;
   item["language_name"] = languageCodeMap[language_code];
-  console.log(language_code);
-  console.log(languageCodeMap[language_code]);
+
   
   let ancestors = getDirectAncestorsMany(equs);
 
