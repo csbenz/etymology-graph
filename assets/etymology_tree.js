@@ -177,7 +177,6 @@ function getDirectAncestors(short_url) {
 
 function getDirectAncestorsMany(short_urls) {
   if (!Array.isArray(short_urls)) {
-    console.log('NOT AN ARRAY!');
     return [];
   }
 
@@ -211,10 +210,10 @@ function showTreeRecur(words, deepness) {
     console.log(tabs + 'WORD: ' + wordNameMap[word]);
 
     let equs = getEquivalents(word, []);
-    console.log(tabs + 'equivalent words: ' + equs.map(x => wordNameMap[x]));
+    //console.log(tabs + 'equivalent words: ' + equs.map(x => wordNameMap[x]));
 
     let ancestors = getDirectAncestorsMany(equs);
-    console.log(tabs + 'ancestors: ' + ancestors.map(x => wordNameMap[x]));
+    //console.log(tabs + 'ancestors: ' + ancestors.map(x => wordNameMap[x]));
 
     showTreeRecur(ancestors, deepness + 1);
   });
@@ -229,7 +228,8 @@ function createJSONChild(word) {
   let equs = getEquivalents(word, []);
 
   let item = {};
-  item ["name"] = equs.map(x => wordNameMap[x]).toString();
+  item["name"] = equs.map(x => wordNameMap[x]).toString();
+  item["language"] = get_language_code(word);
   
   let ancestors = getDirectAncestorsMany(equs);
 
@@ -242,11 +242,8 @@ function createJSONChild(word) {
     treatedWords.push(equ);
     
     let child = createJSONChild(equ);
-    console.log(equ);
-    console.log(child);
-    console.log(child.length);
+
     if(child) {
-      //console.log(child);
       childrenArray.push(child);
     }
   });
@@ -259,6 +256,11 @@ function createJSONChild(word) {
   return item;
 }
 
+function get_language_code(short_url) {
+  let prefix = 'http://etytree-virtuoso.wmflabs.org/dbnary/eng/';
 
+  let parts = short_url.replace(prefix, '').split('/');
+  let language_code = parts.length > 1 ? parts[0] : 'eng';
 
-
+  return language_code;
+}
