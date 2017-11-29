@@ -12,7 +12,7 @@ var svg = d3.select(".core_div").append("svg")
     //.attr("width", width + margin.right + margin.left)
     //.attr("height", height + margin.top + margin.bottom)
     .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 960 500")
+    .attr("viewBox", "0 0 1880 1000")
   .append("g")
     .attr("transform", "translate("
           + margin.left + "," + margin.top + ")");
@@ -22,7 +22,7 @@ var i = 0,
     root;
 
 // declares a tree layout and assigns the size
-var treemap = d3.tree().size([height/2, width/2]);
+var treemap = d3.tree().size([height/6, width/6]);
 
 function display_vizu(json_tree) {
     // Assigns parent, children, height, depth
@@ -55,7 +55,7 @@ function update(source) {
       links = treeData.descendants().slice(1);
 
   // Normalize for fixed-depth.
-  nodes.forEach(function(d){ d.y = d.depth * 90});
+  nodes.forEach(function(d){ d.y = d.depth * 180});
 
   // ****************** Nodes section ***************************
 
