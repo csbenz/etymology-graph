@@ -357,7 +357,7 @@ line;code;canonical name;category;type;family code;family;sortkey?;autodetect?;e
 356;aqr;Arhâ;Arhâ language;;poz-cln;New Caledonian;;;;Latn;;
 357;aqt;Angaité;Angaité language;;sai-mas;Mascoian;;;;Latn;;
 358;aqz;Akuntsu;Akuntsu language;;tup;Tupian;;;;Latn;;
-359;ar;Arabic;Arabic language;;sem-arb;Arabic;;autodetect;;Arab,Brai;Modern Standard Arabic,Standard Arabic,Literary Arabic,Classical Arabic;standard characters
+359;ara;Arabic;Arabic language;;sem-arb;Arabic;;autodetect;;Arab,Brai;Modern Standard Arabic,Standard Arabic,Literary Arabic,Classical Arabic;standard characters
 360;arc;Aramaic;Aramaic language;;sem-ara;Aramaic;;autodetect;;Hebr,Armi,Syrc,Palm,Nbat,Phnx,Mand,Samr;Imperial Aramaic,Official Aramaic,Biblical Aramaic;
 361;ard;Arabana;Arabana language;;aus-kar;Karnic;;;;Latn;;
 362;are;Western Arrernte;Western Arrernte language;;aus-pam;Pama-Nyungan;;;;Latn;;
@@ -2030,7 +2030,7 @@ line;code;canonical name;category;type;family code;family;sortkey?;autodetect?;e
 2029;fos;Siraya;Siraya language;;map;Austronesian;;;;Latn;;
 2030;fpe;Pichinglis;Pichinglis language;;crp;creole or pidgin;;;;Latn;;
 2031;fqs;Fas;Fas language;;;;;;;;
-2032;fr;French;French language;;roa-oil;Oïl;sortkey;;;Latn,Brai;Modern French;standard characters
+2032;fra;French;French language;;roa-oil;Oïl;sortkey;;;Latn,Brai;Modern French;standard characters
 2033;frd;Fordata;Fordata language;;poz;Malayo-Polynesian;;;;;;
 2034;frk;Frankish;Frankish language;;gmw;West Germanic;;;;Latn,Runr;Old Frankish;
 2035;frm;Middle French;Middle French language;;roa-oil;Oïl;sortkey;;;Latn;;
@@ -3537,7 +3537,7 @@ line;code;canonical name;category;type;family code;family;sortkey?;autodetect?;e
 3536;kzx;Kamarian;Kamarian language;;plf;Central Malayo-Polynesian;;;;Latn;;
 3537;kzy;Kango-Sua;Kango-Sua language;;bnt;Bantu;;;;;Kango,Kango (Tshopo District);
 3538;kzz;Kalabra;Kalabra language;;paa;Papuan;;;;Latn;;
-3539;la;Latin;Latin language;;itc;Italic;;autodetect;;Latn;;standard characters
+3539;lat;Latin;Latin language;;itc;Italic;;autodetect;;Latn;;standard characters
 3540;laa;Lapuyan Subanun;Lapuyan Subanun language;;phi;Philippine;;;;;;
 3541;lab;Linear A;Linear A language;;;;;;;;
 3542;lac;Lacandon;Lacandon language;;myn;Mayan;;;;;Jach t’aan,Hach t’an;
