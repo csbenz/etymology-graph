@@ -1,8 +1,8 @@
 
 // Set the dimensions and margins of the diagram
-var margin = {top: 20, right: 90, bottom: 30, left: 90},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+var margin = {top: 20, right: 90, bottom: 50, left: 90},
+    width = 1880 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
 
 
 // append the svg object to the body of the page
@@ -12,7 +12,7 @@ var svg = d3.select(".core_div").append("svg")
     //.attr("width", width + margin.right + margin.left)
     //.attr("height", height + margin.top + margin.bottom)
     .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 1880 1000")
+    .attr("viewBox", "0 0 " + width + " " + height)
   .append("g")
     .attr("transform", "translate("
           + margin.left + "," + margin.top + ")");
@@ -28,13 +28,14 @@ function display_vizu(json_tree) {
     // Assigns parent, children, height, depth
     root = d3.hierarchy(json_tree, function(d) { return d.children; });
     root.x0 = height / 2;
-    root.y0 = 0;
+    root.y0 = width;
 
     // Collapse after the second level
     //root.children.forEach(collapse);
 
     update(root);
 }
+
 
 // Collapse the node and all it's children
 function collapse(d) {
@@ -55,7 +56,7 @@ function update(source) {
       links = treeData.descendants().slice(1);
 
   // Normalize for fixed-depth.
-  nodes.forEach(function(d){ d.y = d.depth * 180});
+  nodes.forEach(function(d){d.y = width - 200 - (d.depth * 180)});
 
   // ****************** Nodes section ***************************
 
@@ -83,10 +84,10 @@ function update(source) {
   nodeEnter.append('text')
       .attr("dy", ".35em")
       .attr("x", function(d) {
-          return d.children || d._children ? -13 : 13;
+          return d.children || d._children ? -13 : -13; // posiiton of label text from node center
       })
       .attr("text-anchor", function(d) {
-          return d.children || d._children ? "end" : "start";
+          return d.children || d._children ? "end" : "end";
       })
       .text(function(d) { return d.data.name; });
 
@@ -145,7 +146,7 @@ function update(source) {
   // Transition back to the parent element position
   linkUpdate.transition()
       .duration(duration)
-      .attr('d', function(d){ return diagonal(d, d.parent) });
+      .attr('d', function(d){ return diagonal(d, d.parent)}); //.projection(function(e) { return [e.x, width - e.y]}) })
 
   // Remove any exiting links
   var linkExit = link.exit().transition()
