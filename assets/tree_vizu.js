@@ -17,9 +17,9 @@ var svg = d3.select(".core_div").append("svg")
     .attr("transform", "translate("
           + margin.left + "," + margin.top + ")");
 
-var i = 0,
-    duration = 750,
-    root;
+var i = 0; // For node id
+var duration = 750;
+var root;
 
 // Arrow
 svg.append("svg:defs").selectAll("marker")
@@ -62,14 +62,11 @@ function collapse(d) {
 
 function update(source) {
 
-  // Assigns the x and y position for the nodes
   var treeData = treemap(root);
 
-  // Compute the new tree layout.
-  var nodes = treeData.descendants(),
-      links = treeData.descendants().slice(1);
+  var nodes = treeData.descendants();
+  var links = treeData.descendants().slice(1);
 
-  // Normalize for fixed-depth.
   nodes.forEach(function(d){d.y = width - 200 - (d.depth * 180)});
 
   // ****************** Nodes section ***************************
@@ -192,8 +189,11 @@ function update(source) {
     return path
   }
 
-  // Toggle children on click.
   function click(d) {
+
+  	window.open(d.data.wiktionary_link);
+/*
+  	// TODO load new tree from clicked node
     if (d.children) {
         d._children = d.children;
         d.children = null;
@@ -202,6 +202,7 @@ function update(source) {
         d._children = null;
       }
     update(d);
+    */
   }
 
 }

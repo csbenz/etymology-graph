@@ -36,6 +36,8 @@ var wordNameMap = {};
 // Map of 'tuple' ([array of equivalent words, ancestors])
 var AncestorTree = [];
 
+var wiktionaryLinkMap = {};
+
 var treatedWords = [];
 
 var languageCodeMap = load_language_code_map();
@@ -117,6 +119,7 @@ function search_root_word(word) {
   wordNameMap = {};
   AncestorTree = [];
   treatedWords = [];
+  wiktionaryLinkMap = {};
 
   // Let's go babe
   search_url(short_url, 0);
@@ -138,10 +141,6 @@ function search_url(short_url, deepness) {
   let part2 = short_url.substring(7); // remove https:// at beginning of string
   let part3 = '%3E&output=text%2Fcsv';
   let url = part1 + part2 + part3;
-
-  //console.log(url);
-  //d3.text("language_codes.csv").get();
-  //languageCodeMap = load_language_code_map();
 
   var request = createCORSRequest("get", url);
   if (request){
@@ -166,6 +165,10 @@ function search_url(short_url, deepness) {
                   let equivalentWord = d.object;
                   console.log('Equivalent to: ' + equivalentWord);
                   addEquivalent(short_url, equivalentWord);
+                 } else if(d.predicate.includes('http://www.w3.org/2000/01/rdf-schema#seeAlso')) {
+                  let wiktionaryLink = d.object;
+                  console.log(wiktionaryLink);
+                  wiktionaryLinkMap[short_url] = wiktionaryLink;
                  }
               });
 
@@ -262,6 +265,7 @@ function createJSONChild(word) {
   item["name"] = equs.map(x => wordNameMap[x]).join(", ") + " [" + language_name + "]";
   item["language_code"] = language_code;
   item["language_name"] = languageCodeMap[language_code];
+  item["wiktionary_link"] = wiktionaryLinkMap[word];
 
   
   let ancestors = getDirectAncestorsMany(equs);
