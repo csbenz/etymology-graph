@@ -4,6 +4,11 @@ title: Algorithm
 description: Etymology Graph
 ---
 
+
+<div id="loading">
+  <div class="loader"></div>
+</div>
+
 <div id="input_div" >
     <form name="myForm" action="javascript:handleInput(search_word.value)"> 
          Etymology for word: <input type="text" name="search_word" id="search_word">
@@ -14,3 +19,9 @@ description: Etymology Graph
 <script type="text/javascript" src="{{ site.baseurl }}/assets/etymology_tree.js"></script>
 <script type="text/javascript" src="{{ site.baseurl }}/assets/tree_vizu.js"></script>
 
+
+<script language="javascript" type="text/javascript">
+     $(window).load(function() {
+     $('#loading').hide();
+  });
+</script>
