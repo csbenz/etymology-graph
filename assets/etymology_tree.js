@@ -122,48 +122,27 @@ function search_root_word(word) {
   AncestorTree = [];
   treatedWords = [];
   wiktionaryLinkMap = {};
-  promises = [];
 
   // Let's go babe
   
-  console.log('is this it? ' + promises.length);
 
   //promises.push(search_url(short_url, 0))
 
   search_url(short_url, 0).then(function(rr) {
-    console.log('aaa ' + rr);
-    console.log('bbb ' + promises.length);
-    //Promise.all(promises).then(function(result) {
-      console.log('WOLOLOOOOOOOOOO ' + promises.length);
+    // executed when collected  data
 
-      console.log(ancestorMap);
-      console.log(equivalentMap);
-      console.log(wordNameMap);
+    console.log(ancestorMap);
+    console.log(equivalentMap);
+    console.log(wordNameMap);
 
-      //load_language_code_map();
+    
+    treatedWords = [];
+    let jsonTree = createJSONChild(rootWord);
+    display_vizu(jsonTree);
 
-     // showTreeRecur([rootWord], 0);
-
-      //let jsonTree = createJSONChild(rootWord);
-      //console.log(JSON.stringify(jsonTree));
-      
-      treatedWords = [];
-      let jsonTree = createJSONChild(rootWord);
-      display_vizu(jsonTree);
-
-  /*
-      window.setInterval(function(){
-        /// call your function here
-        treatedWords = [];
-        let jsonTree = createJSONChild(rootWord);
-        display_vizu(jsonTree);
-      }, 300);
-  */
-
-    }, function(err) {
-      console.log(err);
-    });
- // });
+  }, function(err) {
+    console.log(err);
+  });
 }
 
 var promises = [];
@@ -171,17 +150,14 @@ var promises = [];
 function search_url(short_url, deepness) {
   return new Promise(function(resolve, reject) {
     if(deepness > MAX_DEPTH) {
-      console.log('this resolved 1 ' +promises.length);
       resolve();
-      //return;
+      return;
     }
 
     if(traversedWords.includes(short_url)) {
-      console.log('this resolved 2 ' +promises.length);
       resolve();
-      //return;
+      return;
     }
-
     traversedWords.push(short_url);
 
     let part1 = 'https://etytree-virtuoso.wmflabs.org/sparql?query=define%20sql%3Adescribe-mode%20%22CBD%22%20%20DESCRIBE%20%3Chttp%3A%2F%2F';
@@ -194,6 +170,8 @@ function search_url(short_url, deepness) {
       request.onload = function(){
 
           let aa = d3.csvParse(request.responseText);
+
+          let promisess = [];
           aa.forEach(function(d) {
 
                  if(d.predicate.includes('label')) {
@@ -206,13 +184,8 @@ function search_url(short_url, deepness) {
                   console.log('is related to: ' + ancestor_short_url);
 
                   addAncestor(short_url, ancestor_short_url);
-                  
-                  //promises.push(search_url(ancestor_short_url, deepness + 1));
-                  search_url(ancestor_short_url, deepness + 1).then(function(rrrr) {
-                    console.log('this resolved 3 ' +promises.length);
-                    resolve(short_url);
-                  });
-                  console.log('--------- ' + promises.length);
+
+                  promisess.push(search_url(ancestor_short_url, deepness + 1));
 
                  } else if(d.predicate.includes('etymologicallyEquivalentTo')) {
                   let equivalentWord = d.object;
@@ -224,27 +197,18 @@ function search_url(short_url, deepness) {
                  }
               });
 
-        //console.log('this resolved 3 ' +promises.length);
-        //resolve(short_url);
-          /*
-        setTimeout(function(){
-          console.log('this resolved 3 ' +promises.length);
-          resolve();
-            //do what you need here
-        }, 1000);
-        */
-        
+        Promise.all(promisess).then(function() {
+          resolve(short_url);
+        });
 
       };
       request.onerror = function() {
             reject(new Error("Network Error"));
       };
-      request.send();
-      //reject();
-      
+      request.send();      
     } else {
-      console.log('this resolved 4 ' +promises.length);
-      resolve();
+      reject();
+      return;
     }
   });
 }
