@@ -3,6 +3,7 @@
 function handleInput(data) {
     search_root_word(data);
 
+/*
     console.log(ancestorMap);
     console.log(equivalentMap);
     console.log(wordNameMap);
@@ -15,9 +16,10 @@ function handleInput(data) {
     console.log(JSON.stringify(jsonTree));
     
     display_vizu(jsonTree);
+    */
 }
 
-const MAX_DEPTH = 11;
+const MAX_DEPTH = 15;
 
 var rootWord = "";
 
@@ -98,7 +100,7 @@ function removeDuplicates(num) {
 function createCORSRequest(method, url){
     var xhr = new XMLHttpRequest();
     if ("withCredentials" in xhr){
-        xhr.open(method, url, false); // true = async
+        xhr.open(method, url, true); // true = async
     } else if (typeof XDomainRequest != "undefined"){
         xhr = new XDomainRequest();
         xhr.open(method, url);
@@ -120,32 +122,77 @@ function search_root_word(word) {
   AncestorTree = [];
   treatedWords = [];
   wiktionaryLinkMap = {};
+  promises = [];
 
   // Let's go babe
-  search_url(short_url, 0);
+  
+  console.log('is this it? ' + promises.length);
+
+  //promises.push(search_url(short_url, 0))
+
+  search_url(short_url, 0).then(function(rr) {
+    console.log('aaa ' + rr);
+    console.log('bbb ' + promises.length);
+    //Promise.all(promises).then(function(result) {
+      console.log('WOLOLOOOOOOOOOO ' + promises.length);
+
+      console.log(ancestorMap);
+      console.log(equivalentMap);
+      console.log(wordNameMap);
+
+      //load_language_code_map();
+
+     // showTreeRecur([rootWord], 0);
+
+      //let jsonTree = createJSONChild(rootWord);
+      //console.log(JSON.stringify(jsonTree));
+      
+      treatedWords = [];
+      let jsonTree = createJSONChild(rootWord);
+      display_vizu(jsonTree);
+
+  /*
+      window.setInterval(function(){
+        /// call your function here
+        treatedWords = [];
+        let jsonTree = createJSONChild(rootWord);
+        display_vizu(jsonTree);
+      }, 300);
+  */
+
+    }, function(err) {
+      console.log(err);
+    });
+ // });
 }
 
+var promises = [];
 
 function search_url(short_url, deepness) {
-  if(deepness > MAX_DEPTH) {
-    return;
-  }
+  return new Promise(function(resolve, reject) {
+    if(deepness > MAX_DEPTH) {
+      console.log('this resolved 1 ' +promises.length);
+      resolve();
+      //return;
+    }
 
-  if(traversedWords.includes(short_url)) {
-    return;
-  }
+    if(traversedWords.includes(short_url)) {
+      console.log('this resolved 2 ' +promises.length);
+      resolve();
+      //return;
+    }
 
-  traversedWords.push(short_url);
+    traversedWords.push(short_url);
 
-  let part1 = 'https://etytree-virtuoso.wmflabs.org/sparql?query=define%20sql%3Adescribe-mode%20%22CBD%22%20%20DESCRIBE%20%3Chttp%3A%2F%2F';
-  let part2 = short_url.substring(7); // remove https:// at beginning of string
-  let part3 = '%3E&output=text%2Fcsv';
-  let url = part1 + part2 + part3;
+    let part1 = 'https://etytree-virtuoso.wmflabs.org/sparql?query=define%20sql%3Adescribe-mode%20%22CBD%22%20%20DESCRIBE%20%3Chttp%3A%2F%2F';
+    let part2 = short_url.substring(7); // remove http:// at beginning of string
+    let part3 = '%3E&output=text%2Fcsv';
+    let url = part1 + part2 + part3;
 
-  var request = createCORSRequest("get", url);
-  if (request){
-
+    var request = createCORSRequest("get", url);
+    if (request){
       request.onload = function(){
+
           let aa = d3.csvParse(request.responseText);
           aa.forEach(function(d) {
 
@@ -159,7 +206,13 @@ function search_url(short_url, deepness) {
                   console.log('is related to: ' + ancestor_short_url);
 
                   addAncestor(short_url, ancestor_short_url);
-                  search_url(ancestor_short_url, deepness + 1);
+                  
+                  //promises.push(search_url(ancestor_short_url, deepness + 1));
+                  search_url(ancestor_short_url, deepness + 1).then(function(rrrr) {
+                    console.log('this resolved 3 ' +promises.length);
+                    resolve(short_url);
+                  });
+                  console.log('--------- ' + promises.length);
 
                  } else if(d.predicate.includes('etymologicallyEquivalentTo')) {
                   let equivalentWord = d.object;
@@ -167,14 +220,33 @@ function search_url(short_url, deepness) {
                   addEquivalent(short_url, equivalentWord);
                  } else if(d.predicate.includes('http://www.w3.org/2000/01/rdf-schema#seeAlso')) {
                   let wiktionaryLink = d.object;
-                  console.log(wiktionaryLink);
                   wiktionaryLinkMap[short_url] = wiktionaryLink;
                  }
               });
 
+        //console.log('this resolved 3 ' +promises.length);
+        //resolve(short_url);
+          /*
+        setTimeout(function(){
+          console.log('this resolved 3 ' +promises.length);
+          resolve();
+            //do what you need here
+        }, 1000);
+        */
+        
+
+      };
+      request.onerror = function() {
+            reject(new Error("Network Error"));
       };
       request.send();
-  }
+      //reject();
+      
+    } else {
+      console.log('this resolved 4 ' +promises.length);
+      resolve();
+    }
+  });
 }
 
 // get all equivalents of word, Checks for equivalents of equivalent words recusively.
@@ -252,9 +324,11 @@ function showTreeRecur(words, deepness) {
 
 
 function createJSONChild(word) {
+  /*
   if(!word) {
     return [];
   }
+  */
 
   let equs = getEquivalents(word, []);
 
@@ -277,6 +351,7 @@ function createJSONChild(word) {
       return [];
     }
     treatedWords.push(equ);
+
     
     let child = createJSONChild(equ);
 

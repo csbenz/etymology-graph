@@ -18,7 +18,7 @@ var svg = d3.select(".core_div").append("svg")
           + margin.left + "," + margin.top + ")");
 
 var i = 0; // For node id
-var duration = 750;
+var duration = 0;
 var root;
 
 // Arrow
