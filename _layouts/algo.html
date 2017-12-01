@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	{% include head.html %}
+  </head>
+
+  <body>
+
+    <div class="title_div">
+      <div class="title_div_txt">
+        <h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1><br />
+        <h2>{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}</h2>
+      </div>
+    </div>
+
+	<main class="core_div">
+            {{ content }}
+	</main>
+
+  </body>
+ 
+   <footer>
+	{% include footer.html %}
+  </footer>
+ 
+</html>
