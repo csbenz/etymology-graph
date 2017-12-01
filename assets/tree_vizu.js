@@ -1,4 +1,6 @@
 
+const NODE_HEIGHT = 28;
+
 // Set the dimensions and margins of the diagram
 var margin = {top: 20, right: 90, bottom: 50, left: 90},
     width = 1880 - margin.left - margin.right,
@@ -84,26 +86,51 @@ function update(source) {
     .on('click', click);
 
   // Add Circle for the nodes
+  /*
   nodeEnter.append('circle')
       .attr('class', 'node')
       .attr('r', 1e-6)
       .style("fill", function(d) {
           return d._children ? "lightsteelblue" : "#fff";
       });
+      */
+  nodeEnter.append('rect')
+      .attr('class', 'node')
+      .attr("width", function(d) { return get_text_width(d.data.name)})
+      .attr("height", NODE_HEIGHT)
+      .attr("rx", 4)
+      .attr("ry", 4)
+      .attr('cursor', 'pointer')
+      .style("fill", function(d) {
+          return d._children ? "lightsteelblue" : "lightsteelblue";
+      });
 
   // Add labels for the nodes
   nodeEnter.append('text')
-      .attr("dy", ".35em")
+      .attr("dy", ".36em")
       .attr("x", function(d) {
-          return d.children || d._children ? -13 : -13;
+          return get_text_width(d.data.name) - 7;
       })
       .attr("y", function(d) {
-          return d.children || d._children ? -10 : -10;
+          return NODE_HEIGHT/2;
       })
       .attr("text-anchor", function(d) {
           return d.children || d._children ? "end" : "end";
       })
       .text(function(d) { return d.data.name; });
+
+   nodeEnter.append('text')
+      .attr("dy", ".35em")
+      .attr("x", function(d) {
+          return d.children || d._children ? get_text_width(d.data.name) : get_text_width(d.data.name);
+      })
+      .attr("y", function(d) {
+          return d.children || d._children ? NODE_HEIGHT*1.5 : NODE_HEIGHT*1.5;
+      })
+      .attr("text-anchor", function(d) {
+          return d.children || d._children ? "end" : "end";
+      })
+      .text(function(d) { return "(" + d.data.language_name + ")"; });
 
   // UPDATE
   var nodeUpdate = nodeEnter.merge(node);
@@ -112,16 +139,21 @@ function update(source) {
   nodeUpdate.transition()
     .duration(duration)
     .attr("transform", function(d) { 
-        return "translate(" + d.y + "," + d.x + ")";
+        return "translate(" + (d.y  - get_text_width(d.data.name) / 2) + "," + (d.x - NODE_HEIGHT/2) + ")";
      });
 
+  function get_text_width(text) {
+  	return text.length * 8 + 15;
+  }
   // Update the node attributes and style
+  /*
   nodeUpdate.select('circle.node')
     .attr('r', 10)
     .style("fill", function(d) {
         return d._children ? "lightsteelblue" : "#fff";
     })
     .attr('cursor', 'pointer');
+    */
 
 
   // Remove any exiting nodes
@@ -133,8 +165,10 @@ function update(source) {
       .remove();
 
   // On exit reduce the node circles size to 0
+  /*
   nodeExit.select('circle')
     .attr('r', 1e-6);
+    */
 
   // On exit reduce the opacity of text labels
   nodeExit.select('text')

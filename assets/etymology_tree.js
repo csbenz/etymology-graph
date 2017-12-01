@@ -300,7 +300,7 @@ function createJSONChild(word) {
   let language_name = languageCodeMap[language_code];
 
   let item = {};
-  item["name"] = equs.map(x => wordNameMap[x]).join(", ") + " [" + language_name + "]";
+  item["name"] = equs.map(x => wordNameMap[x]).join(", ");// + " [" + language_name + "]";
   item["language_code"] = language_code;
   item["language_name"] = languageCodeMap[language_code];
   item["wiktionary_link"] = wiktionaryLinkMap[word];
