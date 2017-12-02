@@ -3,17 +3,15 @@
 var g;
 reset_graph();
 
-// Add an array of states (node names)
-function add_nodes(states) {
-	states.forEach(add_node);
-}
-
-function add_node(state) {
-	g.setNode(state, { label: state });
+function add_node(state, name) {
+	g.setNode(state, { label: name });
 }
 
 function add_edge(from, to, label_name) {
-	g.setEdge(from, to, { label: label_name });
+	g.setEdge(from, to, {
+		label: label_name,
+		curve: d3.curveBasis
+	});
 }
 
 function add_cluster(cluster) {
@@ -58,28 +56,27 @@ function clear() {
 function set_from_json_go(jsonTree) {
 	clear();
 
-	console.log(JSON.stringify(jsonTree));
 	current_json = JSON.parse(JSON.stringify(jsonTree));
 
-	var checked = document.getElementById('show_cluster_checkbox').checked;
+	var show_clusters_checked = document.getElementById('show_cluster_checkbox').checked;
 	
-	set_from_json(jsonTree, checked);
+	set_from_json(jsonTree, show_clusters_checked);
 }
 
 function set_from_json(json_tree, show_clusters) {
 	// Create root
 	var root_node_name = json_tree['name'];
 	var root_node_language_name = json_tree['language_name'];
+	var root_node_id = json_tree['short_url'];
 
-	add_node(root_node_name);
-	set_root_node(root_node_name);
-	style_node_default(root_node_name);
+	add_node(root_node_id, root_node_name);
+	set_root_node(root_node_id);
+	style_node_default(root_node_id);
 
 	if(show_clusters) {
 		add_cluster(root_node_language_name);
-		set_cluster(root_node_name, root_node_language_name);
+		set_cluster(root_node_id, root_node_language_name);
 	}
-	
 
 	// Iterate recursively on children
 	child_iter(json_tree, show_clusters);
@@ -90,7 +87,7 @@ function set_from_json(json_tree, show_clusters) {
 }
 
 function child_iter(node, show_clusters) {
-	var name = node['name'];
+	var parent_id = node['short_url'];
 	var children = node['children'];
 
 	if(!children) {
@@ -100,17 +97,18 @@ function child_iter(node, show_clusters) {
 	//setTimeout(function(){
 		children.forEach(function(child) {
 			var child_name = child['name'];
+			var child_id = child['short_url'];
 			var child_language_name = child['language_name'];
 			var child_children = child['children'];
 
-		    add_node(child_name);
-			style_node_default(child_name);
+		    add_node(child_id, child_name);
+			style_node_default(child_id);
 
-			add_edge(child_name, name, '');
+			add_edge(child_id, parent_id, '');
 
 			if(show_clusters) {
 				add_cluster(child_language_name);
-				set_cluster(child_name, child_language_name);
+				set_cluster(child_id, child_language_name);
 			}
 			
 			if(child_children) {

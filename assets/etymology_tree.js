@@ -326,11 +326,6 @@ function showTreeRecur(words, deepness) {
 
 
 function createJSONChild(word) {
-  /*
-  if(!word) {
-    return [];
-  }
-  */
 
   let equs = getEquivalents(word);
 
@@ -338,7 +333,8 @@ function createJSONChild(word) {
   let language_name = languageCodeMap[language_code];
 
   let item = {};
-  item["name"] = equs.map(x => wordNameMap[x]).join(", ");// + " [" + language_name + "]";
+  item["name"] = equs.map(x => wordNameMap[x]).join(", ");
+  item["short_url"] = word;
   item["language_code"] = language_code;
   item["language_name"] = languageCodeMap[language_code];
   item["wiktionary_link"] = wiktionaryLinkMap[word];
