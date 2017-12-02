@@ -140,7 +140,7 @@ function search_root_word(word) {
     let jsonTree = createJSONChild(rootWord);
     console.log(JSON.stringify(jsonTree));
 
-    set_from_json(jsonTree);
+    set_from_json_go(jsonTree);
     //display_vizu(jsonTree);
 
   }, function(err) {

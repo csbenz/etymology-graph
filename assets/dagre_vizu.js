@@ -1,13 +1,7 @@
 
 // Create the input graph
-var g = new dagreD3.graphlib.Graph({compound:true}).setGraph({});
-g.setGraph({
-	nodesep: 70,
-	ranksep: 50,
-	rankdir: "LR",
-	marginx: 20,
-	marginy: 20
-});
+var g;
+reset_graph();
 
 // Add an array of states (node names)
 function add_nodes(states) {
@@ -40,53 +34,104 @@ function style_node_default(state) {
   	node.rx = node.ry = 5;
 }
 
-function set_from_json(json_tree) {
+var clusters = [];
+var current_json;
 
+function reset_graph() {
+	g = new dagreD3.graphlib.Graph({directed:true, compound:true, multigraph:false}).setGraph({});
+	g.setGraph({
+		nodesep: 70,
+		ranksep: 50,
+		rankdir: "LR",
+		marginx: 20,
+		marginy: 20
+		//ranksep: 1
+	});
+}
+
+function clear() {
+	clusters = [];
+	current_json = [];
+	reset_graph();
+}
+
+function set_from_json_go(jsonTree) {
+	clear();
+
+	console.log(JSON.stringify(jsonTree));
+	current_json = JSON.parse(JSON.stringify(jsonTree));
+
+	var checked = document.getElementById('show_cluster_checkbox').checked;
+	
+	set_from_json(jsonTree, checked);
+}
+
+function set_from_json(json_tree, show_clusters) {
 	// Create root
-	var root_node = json_tree['name'];
-	add_node(root_node);
-	set_root_node(root_node);
-	style_node_default(root_node);
+	var root_node_name = json_tree['name'];
+	var root_node_language_name = json_tree['language_name'];
 
-	child_iter(json_tree);
+	add_node(root_node_name);
+	set_root_node(root_node_name);
+	style_node_default(root_node_name);
 
+	if(show_clusters) {
+		add_cluster(root_node_language_name);
+		set_cluster(root_node_name, root_node_language_name);
+	}
+	
 
+	// Iterate recursively on children
+	child_iter(json_tree, show_clusters);
+	
+	// re-render
 	var render = new dagreD3.render();
 	render(inner, g);
 }
 
-function child_iter(node) {
+function child_iter(node, show_clusters) {
 	var name = node['name'];
 	var children = node['children'];
 
+	if(!children) {
+		return;
+	}
 
-	children.forEach(function(child) {
-		var child_name = child['name'];
-		var child_language_name = child['language_name'];
-		var child_children = child['children'];
+	//setTimeout(function(){
+		children.forEach(function(child) {
+			var child_name = child['name'];
+			var child_language_name = child['language_name'];
+			var child_children = child['children'];
 
-		add_node(child_name);
-		style_node_default(child_name);
+		    add_node(child_name);
+			style_node_default(child_name);
 
-		//add_cluster(child_language_name);
-		//set_cluster(child_name, child_language_name);
+			add_edge(child_name, name, '');
 
-		add_edge(child_name, name, '');
-
-		if(child_children) {
-			child_iter(child);
-		}
-	});
-
-
-
+			if(show_clusters) {
+				add_cluster(child_language_name);
+				set_cluster(child_name, child_language_name);
+			}
+			
+			if(child_children) {
+				child_iter(child, show_clusters);
+			}			
+		});
+		// re-render
+	//	var render = new dagreD3.render();
+	//	render(inner, g);
+	//}, 0);
 }
 
+function showClustersListener(checkbox) {
+	reset_graph();
+	set_from_json(current_json, checkbox.checked == true);
+}
 
 
 var margin = {top: 20, right: 90, bottom: 50, left: 90};
 var width = 1000 - margin.left - margin.right;
-var height = 400 - margin.top - margin.bottom;
+var height = 500 - margin.top - margin.bottom;
 
 var svg = d3.select(".core_div").append("svg")
 	//.attr("width", width + margin.right + margin.left)
