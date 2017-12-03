@@ -4,7 +4,9 @@ var g;
 reset_graph();
 
 function add_node(state, name) {
-	g.setNode(state, { label: name });
+	g.setNode(state, {
+		label: name
+	});
 	//g.node(state).label = "<div>aa</div>";
 }
 
@@ -35,23 +37,24 @@ function style_node_default(state) {
   	node.rx = node.ry = 5;
 }
 
-var clusters = [];
 var current_json;
+var noReset = false;
 
 function reset_graph() {
-	g = new dagreD3.graphlib.Graph({directed:true, compound:true, multigraph:false}).setGraph({});
-	g.setGraph({
-		nodesep: 70,
-		ranksep: 50,
-		rankdir: "LR",
-		marginx: 20,
-		marginy: 20
-		//ranksep: 1
-	});
+	if(!noReset) {
+		g = new dagreD3.graphlib.Graph({directed:true, compound:true, multigraph:false}).setGraph({});
+		g.setGraph({
+			nodesep: 70,
+			ranksep: 50,
+			rankdir: "LR",
+			marginx: 20,
+			marginy: 20
+			//ranksep: 25
+		});
+	}
 }
 
 function clear() {
-	clusters = [];
 	current_json = [];
 	reset_graph();
 }
@@ -87,12 +90,17 @@ function set_from_json(json_tree, show_clusters) {
 	
 	// re-render
 	var render = new dagreD3.render();
-
     render(inner, g);
+
+    // Reset zoom
+	zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
+	zoom_handler.translateBy(svg, width - g.graph().width,  (height/2) - (g.node(root_node_id).y));
 
     svg.selectAll("g.node").on("click", function(id) {
   		window.open(wiktionaryLinkMap[id]);
   	});
+
+
 }
 
 function child_iter(node, show_clusters) {
@@ -115,7 +123,7 @@ function child_iter(node, show_clusters) {
 		    add_node(child_id, label_name);
 			style_node_default(child_id);
 
-			add_edge(child_id, parent_id, '');
+			add_edge(child_id, parent_id, child_language_name);
 
 			if(show_clusters) {
 				add_cluster(child_language_name);
@@ -142,6 +150,10 @@ function showClustersListener(checkbox) {
 	set_from_json(current_json, checkbox.checked == true);
 }
 
+function noResetListener(checkbox) {
+	noReset = checkbox.checked;
+}
+
 
 var margin = {top: 20, right: 90, bottom: 50, left: 90};
 var width = 1000 - margin.left - margin.right;
@@ -162,19 +174,14 @@ render(inner, g);
 
 /* 
  * ZOOM BEHAVIOUR         
- */     
-
-
-var zoom_handler = d3.zoom()
-    .on("zoom", zoom_actions);
-
+ */
 function zoom_actions(){
   inner.attr("transform", d3.event.transform);
 }
 
+var zoom_handler = d3.zoom()
+    	.on("zoom", zoom_actions);
 zoom_handler(svg);
-
-
 
 
 function strToHexColor(str) {
