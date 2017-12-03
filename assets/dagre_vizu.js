@@ -5,6 +5,7 @@ reset_graph();
 
 function add_node(state, name) {
 	g.setNode(state, { label: name });
+	//g.node(state).label = "<div>aa</div>";
 }
 
 function add_edge(from, to, label_name) {
@@ -15,7 +16,9 @@ function add_edge(from, to, label_name) {
 }
 
 function add_cluster(cluster) {
-	g.setNode(cluster, {label: cluster, clusterLabelPos: 'top', style: 'fill: #d3d7e8'});
+	//var rColor = strToHexColor(cluster);
+	var rColor = 'd3d7e8';
+	g.setNode(cluster, {label: cluster, clusterLabelPos: 'top', style: 'fill: #' + rColor});
 }
 
 function set_cluster(node, cluster) {
@@ -69,7 +72,8 @@ function set_from_json(json_tree, show_clusters) {
 	var root_node_language_name = json_tree['language_name'];
 	var root_node_id = json_tree['short_url'];
 
-	add_node(root_node_id, root_node_name);
+	var label_name = get_node_label_text(root_node_name, root_node_language_name);
+	add_node(root_node_id, label_name);
 	set_root_node(root_node_id);
 	style_node_default(root_node_id);
 
@@ -83,7 +87,12 @@ function set_from_json(json_tree, show_clusters) {
 	
 	// re-render
 	var render = new dagreD3.render();
-	render(inner, g);
+
+    render(inner, g);
+
+    svg.selectAll("g.node").on("click", function(id) {
+  		window.open(wiktionaryLinkMap[id]);
+  	});
 }
 
 function child_iter(node, show_clusters) {
@@ -101,7 +110,9 @@ function child_iter(node, show_clusters) {
 			var child_language_name = child['language_name'];
 			var child_children = child['children'];
 
-		    add_node(child_id, child_name);
+			var label_name = get_node_label_text(child_name, child_language_name);
+
+		    add_node(child_id, label_name);
 			style_node_default(child_id);
 
 			add_edge(child_id, parent_id, '');
@@ -119,6 +130,11 @@ function child_iter(node, show_clusters) {
 	//	var render = new dagreD3.render();
 	//	render(inner, g);
 	//}, 0);
+}
+
+function get_node_label_text(name, language_name) {
+	return name;
+	//return name + "\n" + "<span style='font-size:16px'>" + language_name + "</span>";
 }
 
 function showClustersListener(checkbox) {
@@ -146,7 +162,9 @@ render(inner, g);
 
 /* 
  * ZOOM BEHAVIOUR         
- */       
+ */     
+
+
 var zoom_handler = d3.zoom()
     .on("zoom", zoom_actions);
 
@@ -155,3 +173,26 @@ function zoom_actions(){
 }
 
 zoom_handler(svg);
+
+
+
+
+function strToHexColor(str) {
+	return intToRGB(hashCode(str));
+}
+
+function hashCode(str) {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+       hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return hash;
+} 
+
+function intToRGB(i){
+    var c = (i & 0x00FFFFFF)
+        .toString(16)
+        .toUpperCase();
+
+    return "00000".substring(0, 6 - c.length) + c;
+}
