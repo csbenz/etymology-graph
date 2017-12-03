@@ -141,7 +141,7 @@ img {
   padding: 0;
   display: inline-block;
   background-color: #FFFFFF;
-  width: 80%;
+  width: 90%;
   min-height: 55%;
   color: #111111;
   text-align: left;
@@ -224,18 +224,21 @@ img {
 /* graph */
 
 
-.node circle {
+text {
+  font-weight: 300;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+  font-size: 14px;
+}
+
+.node rect {
+  stroke: #333;
   fill: #fff;
-  stroke: steelblue;
-  stroke-width: 3px;
+  stroke-width: 1.5px;
 }
 
-.node text {
-  font: 12px sans-serif;
-}
-
-.link {
+.edgePath path.path {
+  stroke: #333;
   fill: none;
-  stroke: #ccc;
-  stroke-width: 2px;
+  stroke-width: 1.5px;
 }
+

@@ -138,7 +138,10 @@ function search_root_word(word) {
     
     treatedWords = [];
     let jsonTree = createJSONChild(rootWord);
-    display_vizu(jsonTree);
+    console.log(JSON.stringify(jsonTree));
+
+    set_from_json_go(jsonTree);
+    //display_vizu(jsonTree);
 
   }, function(err) {
     console.log(err);
@@ -149,10 +152,16 @@ var promises = [];
 
 function search_url(short_url, deepness) {
   return new Promise(function(resolve, reject) {
+    if(short_url.includes('_1_')) {
+      console.log('________1_ ' + short_url);
+    }
+
+
     if(deepness > MAX_DEPTH) {
       resolve();
       return;
     }
+
 
     if(traversedWords.includes(short_url)) {
       resolve();
@@ -212,22 +221,51 @@ function search_url(short_url, deepness) {
     }
   });
 }
+/*
+function getEquivalents(short_url) {
+
+  function getEquivalentss(short_url, traversedEqus, acc) {
+    console.log(acc);
+    acc = acc.concat(short_url);
+
+    let equivalents = equivalentMap[short_url] || [];
+
+    equivalents.forEach(function(d) {
+      if(!acc.includes(d)) {
+        acc = getEquivalentss(d, acc);
+      }
+    });
+
+    return acc;
+  }
+
+  return getEquivalentss(short_url, [], []);
+}
+*/
 
 // get all equivalents of word, Checks for equivalents of equivalent words recusively.
-function getEquivalents(short_url, acc) {
-  acc = acc.concat(short_url);
+function getEquivalents(short_url) {
 
-  let ancestor_equivalents = equivalentMap[short_url] || [];
-
-  ancestor_equivalents.forEach(function(d) {
-    if(!acc.includes(d)) {
-      //acc = acc.concat(d);
-      acc = acc.concat(getEquivalents(d, acc));
+  function getEquivalentsss(short_url, traversedEqus, acc) {
+    if(traversedEqus.includes(short_url)) {
+      return acc;
     }
-  });
+    acc = acc.concat(short_url);
 
-  return acc;
+    let equivalents = equivalentMap[short_url] || [];
+
+    equivalents.forEach(function(d) {
+      if(!acc.includes(d)) {
+        acc = getEquivalentsss(d, traversedEqus, acc);
+      }
+    });
+
+    return acc;
+  }
+
+  return getEquivalentsss(short_url,[],[]);  
 }
+
 
 function getDirectAncestors(short_url) {
   let ancestor = ancestorMap[short_url];
@@ -276,7 +314,7 @@ function showTreeRecur(words, deepness) {
 
     console.log(tabs + 'WORD: ' + wordNameMap[word]);
 
-    let equs = getEquivalents(word, []);
+    let equs = getEquivalents(word);
     //console.log(tabs + 'equivalent words: ' + equs.map(x => wordNameMap[x]));
 
     let ancestors = getDirectAncestorsMany(equs);
@@ -288,19 +326,15 @@ function showTreeRecur(words, deepness) {
 
 
 function createJSONChild(word) {
-  /*
-  if(!word) {
-    return [];
-  }
-  */
 
-  let equs = getEquivalents(word, []);
+  let equs = getEquivalents(word);
 
   let language_code = get_language_code(word);
   let language_name = languageCodeMap[language_code];
 
   let item = {};
-  item["name"] = equs.map(x => wordNameMap[x]).join(", ");// + " [" + language_name + "]";
+  item["name"] = equs.map(x => wordNameMap[x]).join(", ");
+  item["short_url"] = word;
   item["language_code"] = language_code;
   item["language_name"] = languageCodeMap[language_code];
   item["wiktionary_link"] = wiktionaryLinkMap[word];

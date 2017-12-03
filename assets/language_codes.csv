@@ -1935,7 +1935,7 @@ line;code;canonical name;category;type;family code;family;sortkey?;autodetect?;e
 1934;ers;Ersu;Ersu language;;sit-qia;Qiangic;;;;Latn;Duoxu,Erhsu;
 1935;ert;Eritai;Eritai language;;;;;;;;
 1936;erw;Erokwanas;Erokwanas language;;poz-hce;Halmahera-Cenderawasih;;;;;;
-1937;es;Spanish;Spanish language;;roa;Romance;sortkey;;;Latn,Brai;Castilian,Amazonian Spanish,Amazonic Spanish,Loreto-Ucayali Spanish;standard characters
+1937;spa;Spanish;Spanish language;;roa;Romance;sortkey;;;Latn,Brai;Castilian,Amazonian Spanish,Amazonic Spanish,Loreto-Ucayali Spanish;standard characters
 1938;ese;Ese Ejja;Ese Ejja language;;sai-tac;Tacanan;;;;;Tiatinagua;
 1939;esh;Eshtehardi;Eshtehardi language;;ira-wes;Western Iranian;;;;fa-Arab;;
 1940;esi;North Alaskan Inupiatun;North Alaskan Inupiatun language;;esx-inu;Inuit;;;;Latn;;
