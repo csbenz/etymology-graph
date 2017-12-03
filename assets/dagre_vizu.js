@@ -21,6 +21,7 @@ function add_cluster(cluster) {
 	//var rColor = strToHexColor(cluster);
 	var rColor = 'd3d7e8';
 	g.setNode(cluster, {label: cluster, clusterLabelPos: 'top', style: 'fill: #' + rColor});
+	g.node(cluster).rx = 5;
 }
 
 function set_cluster(node, cluster) {
@@ -94,12 +95,34 @@ function set_from_json(json_tree, show_clusters) {
 
     // Reset zoom
 	zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
+
+	zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
 	zoom_handler.translateBy(svg, width - g.graph().width,  (height/2) - (g.node(root_node_id).y));
 
+/*
+
+	var scale = width / g.graph().width; //Math.min(width / g.graph().width, height / g.graph().width);;
+	zoom_handler.scaleBy(svg, scale);
+
+	zoom_handler.translateBy(svg, (width/(2*scale)  - width),  (height/2) - (g.node(root_node_id).y));
+
+
+	var scale = width / g.graph().width; //Math.min(width / g.graph().width, height / g.graph().width);;
+	//zoom_handler.scaleBy(svg, scale);
+	//zoom_handler.translateBy(svg, (width  - (g.graph().width ))* scale*2,  (height/2) - (g.node(root_node_id).y));
+
+	zoom_handler.scaleBy(svg, scale);
+	var screenOrigin = 960;
+	zoom_handler.translateBy(svg, screenOrigin - (screenOrigin - this.zoom.translate()[0]) * scale / this.zoom.scale(),  (height/2) - (g.node(root_node_id).y)); // (width/2 - (g.node(root_node_id).x - width)) * scale
+
+	
+	console.log(width + " " + g.graph().width + " " + scale);
+*/
     svg.selectAll("g.node").on("click", function(id) {
   		window.open(wiktionaryLinkMap[id]);
   	});
 
+    //g.node('English').x = 0;
 
 }
 
@@ -119,11 +142,12 @@ function child_iter(node, show_clusters) {
 			var child_children = child['children'];
 
 			var label_name = get_node_label_text(child_name, child_language_name);
+			var edge_name = show_clusters ? '' : child_language_name;
 
 		    add_node(child_id, label_name);
 			style_node_default(child_id);
 
-			add_edge(child_id, parent_id, child_language_name);
+			add_edge(child_id, parent_id, edge_name);
 
 			if(show_clusters) {
 				add_cluster(child_language_name);
@@ -154,14 +178,23 @@ function noResetListener(checkbox) {
 	noReset = checkbox.checked;
 }
 
+/*
+
+var svgParentDiv = document.getElementById("cshow_cluster_div");
+var pWidth = svgParentDiv.clientWidth;
+var pHeight = svgParentDiv.clientHeight;
+
+console.log(pWidth + " " + pHeight)
+*/
 
 var margin = {top: 20, right: 90, bottom: 50, left: 90};
 var width = 1000 - margin.left - margin.right;
-var height = 500 - margin.top - margin.bottom;
+var height = 420 - margin.top - margin.bottom;
 
 var svg = d3.select(".core_div").append("svg")
 	//.attr("width", width + margin.right + margin.left)
     //.attr("height", height + margin.top + margin.bottom);
+    .attr("id", "svg_container")
 	.attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0 0 " + width + " " + height);
 var inner = svg.append("g");
