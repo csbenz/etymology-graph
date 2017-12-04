@@ -152,14 +152,14 @@ img {
   overflow: hidden;
 }
 
-.core_div2 {
+.core_div_algo {
   margin: 0;
   padding: 0;
   display: inline-block;
   background-color: #FFFFFF;
-  width: 100%;
-  min-height: 600px;
-  color: #111111;
+  width: 90%;
+  min-height: 55%;
+  color: #F0F0F0;
   text-align: left;
   padding-left: 30px;
   padding-right: 30px;
@@ -167,6 +167,7 @@ img {
   padding-bottom: 30px;
   overflow: hidden;
 }
+
 
 /* 404 page */
 
