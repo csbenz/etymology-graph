@@ -136,7 +136,7 @@ img {
 
 /* Core part */
 
-.core_div {
+.core_div_algo {
   margin: 0;
   padding: 0;
   display: inline-block;
@@ -152,7 +152,7 @@ img {
   overflow: hidden;
 }
 
-.core_div_algo {
+.core_div {
   margin: 0;
   padding: 0;
   display: inline-block;
