@@ -168,6 +168,47 @@ img {
     padding-left: 20px;
 }
 
+/* Search bar */
+
+form{
+  float: left;
+  box-shadow: 0 1px 5px rgba(255, 5, 14, 1);
+  border-radius: 4px;
+}
+
+form > #search_word {
+  outline: none;
+  height: 40px;
+  width: 200px;
+  line-height: 20px;
+  padding: 0 20px;
+  background-color: rgba(255, 253, 248, 1);
+  color: #010101;
+  border: 0;
+  float: left;
+}
+
+form > .button {
+  background: none;
+  background-color: rgba(38, 50, 56, 0.89);
+  float: left;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  line-height: 20px;
+  border: 0;
+  color: #FFF;
+  font: normal normal normal 15px/1 FontAwesome;
+  font-size: 18px;
+  text-rendering: auto;
+  border-radius: 0 3px 3px 0;
+}
+
+form > .button:hover {
+  background-color: rgba(201, 10, 4, 0.8);
+}
+
+
 /* 404 page */
 
 .err_div {
