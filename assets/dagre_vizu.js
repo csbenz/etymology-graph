@@ -120,7 +120,8 @@ function set_from_json(json_tree, show_clusters) {
 */
     svg.selectAll("g.node").on("click", function(id) {
   		//window.open(wiktionaryLinkMap[id]);
-  		window.open(id);
+  		//window.open(id);
+  		getDescendents(id);
   	});
 
     //g.node('English').x = 0;
