@@ -160,12 +160,13 @@ img {
   height: auto;
   color: #111111;
   text-align: left;
-  padding-left: 30px;
-  padding-right: 30px;
   padding-top: 30px;
   overflow: visible;
 }
 
+#vizu_input{
+    padding-left: 20px;
+}
 
 /* 404 page */
 
