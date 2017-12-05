@@ -33,6 +33,7 @@ function getDescendents(short_url) {
 		+ 'dbetym:etymologicallyRelatedTo* <${short_url}> .    OPTIONAL {        '
 		+ '?descendant1 rdfs:label ?tmp1        BIND (STR(?tmp1) AS ?label1)    } }} } ';
 */
+	noReset = true;
 
 	var jsonQuery = 'http://etytree-virtuoso.wmflabs.org/sparql?default-graph-uri=&query=SELECT+*+{{+SELECT+DISTINCT+?descendant1+?label1+{++++?descendant1+dbetym:etymologicallyRelatedTo*+<${short_url}>+.++++OPTIONAL+{++++++++?descendant1+rdfs:label+?tmp1++++++++BIND+(STR(?tmp1)+AS+?label1)++++}+}}+}+&format=application/sparql-results+json&timeout=0&debug=on';
 
@@ -51,7 +52,11 @@ function getDescendents(short_url) {
 	      aa.forEach(function(d) {
 	      	var url = d.descendant1;
 	      	var label = d.label1;
+	      	console.log('DESCENDANT ------------------------------------');
 	      	console.log(label);
+
+	      	console.log('URLL' + url);
+	      	search_root_short_url(url);
 
 /*
 	         if(d.predicate.includes('label')) {

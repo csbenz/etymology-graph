@@ -114,7 +114,7 @@ function search_root_word(word) {
   let short_url = `http://etytree-virtuoso.wmflabs.org/dbnary/eng/__ee_1_${word}`;
 
   // Initialize vars
-  rootWord = short_url;
+  var rootWord = short_url;
   traversedWords = [];
   ancestorMap = {};
   equivalentMap = {};
@@ -127,6 +127,37 @@ function search_root_word(word) {
   
 
   //promises.push(search_url(short_url, 0))
+
+  search_url(short_url, 0).then(function(rr) {
+    // executed when collected  data
+
+    console.log(ancestorMap);
+    console.log(equivalentMap);
+    console.log(wordNameMap);
+
+    
+    treatedWords = [];
+    let jsonTree = createJSONChild(rootWord);
+    console.log(JSON.stringify(jsonTree));
+
+    set_from_json_go(jsonTree);
+    //display_vizu(jsonTree);
+
+  }, function(err) {
+    console.log(err);
+  });
+}
+
+function search_root_short_url(short_url) {
+  // Initialize vars
+  var rootWord = short_url;
+  traversedWords = [];
+  ancestorMap = {};
+  equivalentMap = {};
+  wordNameMap = {};
+  AncestorTree = [];
+  treatedWords = [];
+  wiktionaryLinkMap = {};
 
   search_url(short_url, 0).then(function(rr) {
     // executed when collected  data

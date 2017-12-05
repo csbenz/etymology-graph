@@ -86,6 +86,8 @@ function set_from_json(json_tree, show_clusters) {
 		set_cluster(root_node_id, root_node_language_name);
 	}
 
+
+
 	// Iterate recursively on children
 	child_iter(json_tree, show_clusters);
 	
@@ -94,7 +96,7 @@ function set_from_json(json_tree, show_clusters) {
     render(inner, g);
 
     // Reset zoom
-	zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
+	//zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
 
 	zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
 	zoom_handler.translateBy(svg, width - g.graph().width,  (height/2) - (g.node(root_node_id).y));
