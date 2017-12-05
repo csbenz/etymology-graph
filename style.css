@@ -31,8 +31,16 @@ h2 {
 }
 
 footer {
-    display:none
-}
+  color: #BBBBBB;
+  background-color: #EEEEEE;
+  font-size: 0.8em;
+  height: 0px;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  border-top-style: solid;
+  border-top-width: 2px;
+ }
 
 img {
     max-width: 100%;
