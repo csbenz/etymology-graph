@@ -358,7 +358,10 @@ function showTreeRecur(words, deepness) {
 
 
 function createJSONChild(word) {
+    return createJSONChildGo(word, 0);
+}
 
+function createJSONChildGo(word, depth) {
   let equs = getEquivalents(word);
 
   let language_code = get_language_code(word);
@@ -370,6 +373,7 @@ function createJSONChild(word) {
   item["language_code"] = language_code;
   item["language_name"] = languageCodeMap[language_code];
   item["wiktionary_link"] = wiktionaryLinkMap[word];
+  item["depth"] = depth
 
   
   let ancestors = getDirectAncestorsMany(equs);
@@ -383,7 +387,7 @@ function createJSONChild(word) {
     treatedWords.push(equ);
 
     
-    let child = createJSONChild(equ);
+    let child = createJSONChildGo(equ, depth+ 1);
 
     if(child) {
       childrenArray.push(child);

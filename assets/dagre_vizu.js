@@ -191,7 +191,7 @@ var pHeight = svgParentDiv.clientHeight;
 console.log(pWidth + " " + pHeight)
 */
 
-var margin = {top: 20, right: 90, bottom: 50, left: 90};
+var margin = {top: 20, right: 0, bottom: 0, left: 0};
 var width = 1000 - margin.left - margin.right;
 var height = 420 - margin.top - margin.bottom;
 
