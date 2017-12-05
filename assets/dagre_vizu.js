@@ -119,7 +119,8 @@ function set_from_json(json_tree, show_clusters) {
 	console.log(width + " " + g.graph().width + " " + scale);
 */
     svg.selectAll("g.node").on("click", function(id) {
-  		window.open(wiktionaryLinkMap[id]);
+  		//window.open(wiktionaryLinkMap[id]);
+  		window.open(id);
   	});
 
     //g.node('English').x = 0;
