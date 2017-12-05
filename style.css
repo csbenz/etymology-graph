@@ -136,12 +136,12 @@ img {
 
 /* Core part */
 
-.core_div {
+.core_div_page {
   margin: 0;
   padding: 0;
   display: inline-block;
   background-color: #FFFFFF;
-  width: 90%;
+  width: 80%;
   min-height: 55%;
   color: #111111;
   text-align: left;
@@ -151,6 +151,23 @@ img {
   padding-bottom: 30px;
   overflow: hidden;
 }
+
+.core_div {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  background-color: #FFFFFF;
+  width: 100%;
+  min-height: 55%;
+  color: #111111;
+  text-align: left;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  overflow: hidden;
+}
+
 
 /* 404 page */
 
