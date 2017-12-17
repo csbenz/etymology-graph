@@ -264,3 +264,19 @@ text {
 #cyto {
   height: 650px;
 }
+
+
+/* cola */
+
+.link {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+.node {
+  fill: #000;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+.node.a { fill: #1f77b4; }
+.node.b { fill: #ff7f0e; }
+.node.c { fill: #2ca02c; }
