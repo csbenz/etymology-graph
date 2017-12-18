@@ -85,6 +85,7 @@ var cola = cola.d3adaptor(d3)
     .links(links)
     .symmetricDiffLinkLengths(30)
     .on("tick", tick)
+    .avoidOverlaps(true)
     .size([width, height]);
 
 var svg = d3.select("body").append("svg")
@@ -133,10 +134,16 @@ function start() {
         .symmetricDiffLinkLengths(30)
         .start(30);
         */
+/*
+    cola
+	.nodes(nodes)
+    .links(links);
+    */
+    
         
    // link = link.data(cola.links(), function (d) { return d.source.id + "-" + d.target.id; });
    //link= cola.links();
-    link = link.data(links, function (d) { return d.source.id + "-" + d.target.id; })
+    link = svg.selectAll(".link").data(links, function (d) { return d.source.id + "-" + d.target.id; })
     	.enter().append("line")
         .attr("class", "link")
         .style("stroke-width", 2)
@@ -145,9 +152,12 @@ function start() {
 
 	//link.exit().remove();
    // node = node.data(cola.nodes(), function (d) { return d.id; });
+
+   var hmm = svg.selectAll(".node").data(nodes, function (d) { return d.id; });
+   console.log(hmm['_enter'][0]);
    	//node = cola.nodes();
 
-	node = node.data(nodes, function (d) { return d.id; })
+	node = svg.selectAll(".node").data(nodes, function (d) { return d.id; })
 	    .enter().append("circle")
         .attr("class", "node")
         .attr("r", 30)
@@ -162,15 +172,7 @@ function start() {
     //node.append("title")
     //    .text(function (d) { return d.name; });
 
-    cola.on("tick", function () {
-        link.attr("x1", function (d) { return d.source.x; })
-            .attr("y1", function (d) { return d.source.y; })
-            .attr("x2", function (d) { return d.target.x; })
-            .attr("y2", function (d) { return d.target.y; });
-
-        node.attr("cx", function (d) { return d.x; })
-            .attr("cy", function (d) { return d.y; });
-    });
+   
     cola.start();
 
 }
@@ -186,12 +188,15 @@ function display_cola_vizu(json_tree) {
 
 }
 
+var i = 0;
 
 
 function showClustersListener(checkbox) {
-	var a = nodes[0], b = nodes[1], c = nodes[2], d = { id: "d", x: 0, y: 0 };
+	i = i + 1;
+	var a = nodes[0], b = nodes[1], c = nodes[2];
+	var d = { id: "d" + i};
     nodes.push(d);
-    links.push({ source: a, target: b }, { source: c, target: b });
+    links.push({ source: d, target: a });
     start();
     
 }
@@ -199,10 +204,11 @@ function showClustersListener(checkbox) {
 
 
 function tick() {
-    node.transition().attr("cx", function (d) { return d.x; })
-        .attr("cy", function (d) { return d.y; })
-    link.transition().attr("x1", function (d) { return d.source.x; })
-        .attr("y1", function (d) { return d.source.y; })
-        .attr("x2", function (d) { return d.target.x; })
-        .attr("y2", function (d) { return d.target.y; });
+    link.attr("x1", function (d) { return d.source.x; })
+            .attr("y1", function (d) { return d.source.y; })
+            .attr("x2", function (d) { return d.target.x; })
+            .attr("y2", function (d) { return d.target.y; });
+
+        node.attr("cx", function (d) { return d.x; })
+            .attr("cy", function (d) { return d.y; });
 }
