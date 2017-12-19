@@ -91,7 +91,7 @@ function display_cyto_vizu(json_tree) {
 	  };
 	  */
 	  var options = {
-	    name: 'cola', // cose 'cose-bilkent'
+	    name: 'cose', // cose 'cose-bilkent'
 	    directed: true,
 	    //randomize: true,
 	    avoidOverlap: true, 

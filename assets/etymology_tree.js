@@ -142,8 +142,8 @@ function search_root_word(word) {
 
     //set_from_json_go(jsonTree);
     //display_vizu(jsonTree);
-    //display_cyto_vizu(jsonTree);
-    display_cola_vizu(jsonTree);
+    display_cyto_vizu(jsonTree);
+    //display_cola_vizu(jsonTree);
 
 
   }, function(err) {
