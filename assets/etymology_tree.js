@@ -118,10 +118,15 @@ function search_root_word(word) {
 
     
     treatedWords = [];
-    let jsonTree = createJSONChild(rootWord);
-    console.log(JSON.stringify(jsonTree));
+    //let jsonTree = createJSONChild(rootWord);
+    //console.log(JSON.stringify(jsonTree));
+    var res = createNodeAndEdgeList(rootWord);
+    var accNodes = res.accNodess;
+    var accEdges = res.accEdgess;
 
-    set_from_json_go(jsonTree);
+    add_to_dagre_vizu(accNodes, accEdges);
+
+    //set_from_json_go(jsonTree);
 
   }, function(err) {
     console.log(err);
@@ -288,10 +293,10 @@ function showTreeRecur(words, deepness) {
 
 
 function createJSONChild(word) {
-    return createJSONChildGo(word, 0);
+    return createJSONChildDepth(word, 0);
 }
 
-function createJSONChildGo(word, depth) {
+function createJSONChildDepth(word, depth) {
   let equs = getEquivalents(word);
 
   let language_code = get_language_code(word);
@@ -317,7 +322,7 @@ function createJSONChildGo(word, depth) {
     treatedWords.push(equ);
 
     
-    let child = createJSONChildGo(equ, depth+ 1);
+    let child = createJSONChildDepth(equ, depth+ 1);
 
     if(child) {
       childrenArray.push(child);
@@ -331,7 +336,62 @@ function createJSONChildGo(word, depth) {
   return item;
 }
 
-//function createNodeAndEdgeList(word,)
+function createNodeAndEdgeList(word) {
+  return createNodeAndEdgeListAcc(word, [], [], 0);
+}
+
+function createNodeAndEdgeListAcc(word, accNodes, accEdges, depth) {
+  let equs = getEquivalents(word);
+
+  let language_code = get_language_code(word);
+  let language_name = languageCodeMap[language_code];
+
+  let item = {};
+  item["name"] = equs.map(x => wordNameMap[x]).join(", ");
+  item["short_url"] = word;
+  item["language_code"] = language_code;
+  item["language_name"] = languageCodeMap[language_code];
+  item["wiktionary_link"] = wiktionaryLinkMap[word];
+
+  if(depth == 0){
+    item["isRoot"] = true;
+  }
+
+  accNodes.push(item);
+
+  let ancestors = getDirectAncestorsMany(equs);
+
+  var nodeList = [];
+  let childrenArray = [];
+  ancestors.forEach(function(ancestor) {
+    
+    if(treatedWords.includes(ancestor)) {
+      return [];
+    }
+    treatedWords.push(ancestor);
+
+    var newEdge = {
+      source: word,
+      target: ancestor
+    }
+
+    accEdges.push(newEdge);
+
+    var ret = createNodeAndEdgeListAcc(ancestor, accNodes, accEdges, depth + 1);
+
+    //accNodes.push(ret.accNodess);
+    //accEdges.push(ret.accEdgess);
+
+  });
+
+
+  return {
+    accNodess: accNodes,
+    accEdgess: accEdges
+  };
+
+
+}
 
 function get_language_code(short_url) {
   let prefix = 'http://etytree-virtuoso.wmflabs.org/dbnary/eng/';

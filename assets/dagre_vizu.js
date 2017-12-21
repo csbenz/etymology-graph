@@ -60,6 +60,43 @@ function clear() {
 	reset_graph();
 }
 
+function add_to_dagre_vizu(nodes, edges) {
+	console.log(nodes);
+	console.log(edges);
+
+	clear();
+
+	addNodes(nodes);
+	addEdges(edges);
+
+	re_render();
+}
+
+
+function addNodes(nodes) {
+	for(i = 0; i < nodes.length; ++i) {
+		add_node(nodes[i].short_url, nodes[i].name);
+	}
+}
+
+function addEdges(edges) {
+	for(i = 0; i < edges.length; ++i) {
+		add_edge(edges[i].source, edges[i].target, 'a');
+	}
+}
+
+function re_render() {
+	// re-render
+	var render = new dagreD3.render();
+    render(inner, g);
+
+    // Reset zoom
+	//zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
+
+	zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
+	//zoom_handler.translateBy(svg, width - g.graph().width,  (height/2) - (g.node(root_node_id).y));
+}
+
 function set_from_json_go(jsonTree) {
 	clear();
 
