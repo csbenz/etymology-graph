@@ -2,21 +2,6 @@
 //enter with this function and the word the user submitted
 function handleInput(data) {
     search_root_word(data);
-
-/*
-    console.log(ancestorMap);
-    console.log(equivalentMap);
-    console.log(wordNameMap);
-
-    //load_language_code_map();
-
-   // showTreeRecur([rootWord], 0);
-
-    let jsonTree = createJSONChild(rootWord);
-    console.log(JSON.stringify(jsonTree));
-    
-    display_vizu(jsonTree);
-    */
 }
 
 const MAX_DEPTH = 15;
@@ -123,10 +108,6 @@ function search_root_word(word) {
   treatedWords = [];
   wiktionaryLinkMap = {};
 
-  // Let's go babe
-  
-
-  //promises.push(search_url(short_url, 0))
 
   search_url(short_url, 0).then(function(rr) {
     // executed when collected  data
@@ -141,49 +122,16 @@ function search_root_word(word) {
     console.log(JSON.stringify(jsonTree));
 
     set_from_json_go(jsonTree);
-    //display_vizu(jsonTree);
-    //display_cyto_vizu(jsonTree);
-    //display_cola_vizu(jsonTree);
-
 
   }, function(err) {
     console.log(err);
   });
 }
 
-function search_root_short_url(short_url) {
-  // Initialize vars
-  var rootWord = short_url;
-  traversedWords = [];
-  ancestorMap = {};
-  equivalentMap = {};
-  wordNameMap = {};
-  AncestorTree = [];
-  treatedWords = [];
-  wiktionaryLinkMap = {};
-
-  search_url(short_url, 0).then(function(rr) {
-    // executed when collected  data
-
-    console.log(ancestorMap);
-    console.log(equivalentMap);
-    console.log(wordNameMap);
-
-    
-    treatedWords = [];
-    let jsonTree = createJSONChild(rootWord);
-    console.log(JSON.stringify(jsonTree));
-
-    set_from_json_go(jsonTree);
-    //display_vizu(jsonTree);
-    
-  }, function(err) {
-    console.log(err);
-  });
-}
 
 var promises = [];
 
+// Takes a root word and recursively searches for its ancestors in the datasource. Creates arrays and maps to store the returned data
 function search_url(short_url, deepness) {
   return new Promise(function(resolve, reject) {
     if(short_url.includes('_1_')) {
@@ -255,27 +203,7 @@ function search_url(short_url, deepness) {
     }
   });
 }
-/*
-function getEquivalents(short_url) {
 
-  function getEquivalentss(short_url, traversedEqus, acc) {
-    console.log(acc);
-    acc = acc.concat(short_url);
-
-    let equivalents = equivalentMap[short_url] || [];
-
-    equivalents.forEach(function(d) {
-      if(!acc.includes(d)) {
-        acc = getEquivalentss(d, acc);
-      }
-    });
-
-    return acc;
-  }
-
-  return getEquivalentss(short_url, [], []);
-}
-*/
 
 // get all equivalents of word, Checks for equivalents of equivalent words recusively.
 function getEquivalents(short_url) {
@@ -402,6 +330,8 @@ function createJSONChildGo(word, depth) {
 
   return item;
 }
+
+function createNodeAndEdgeList(word,)
 
 function get_language_code(short_url) {
   let prefix = 'http://etytree-virtuoso.wmflabs.org/dbnary/eng/';
