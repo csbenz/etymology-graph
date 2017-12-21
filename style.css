@@ -34,13 +34,13 @@ footer {
   color: #BBBBBB;
   background-color: #EEEEEE;
   font-size: 0.8em;
-  height: 30px;
+  height: 0px;
   text-align: center;
   margin: 0;
   padding: 0;
   border-top-style: solid;
   border-top-width: 2px;
-}
+ }
 
 img {
     max-width: 100%;
@@ -155,17 +155,58 @@ img {
 .core_div {
   margin: 0;
   padding: 0;
-  display: inline-block;
   background-color: #FFFFFF;
-  width: 100%;
-  min-height: 55%;
+  width: auto;
+  height: auto;
   color: #111111;
   text-align: left;
-  padding-left: 30px;
-  padding-right: 30px;
   padding-top: 30px;
-  padding-bottom: 30px;
-  overflow: hidden;
+  overflow: visible;
+}
+
+#vizu_input{
+    padding-left: 20px;
+}
+
+/* Search bar */
+
+form{
+  float: left;
+  box-shadow: 0 1px 5px rgba(255, 5, 14, 1);
+  border-radius: 4px;
+}
+
+form > #search_word {
+  outline: none;
+  height: 40px;
+  width: 200px;
+  line-height: 20px;
+  padding: 0 20px;
+  background-color: rgba(255, 253, 248, 1);
+  color: #010101;
+  border: 0;
+  float: left;
+}
+
+form > .button {
+  background: none;
+  background-color: rgba(38, 50, 56, 0.89);
+  float: left;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  line-height: 20px;
+  border: 0;
+  color: #FFF;
+  font: normal normal normal 15px/1 FontAwesome;
+  font-size: 18px;
+  text-rendering: auto;
+  border-radius: 0 3px 3px 0;
+  transition: background-color .3s ease;
+}
+
+form > .button:hover {
+  background-color: rgba(201, 10, 4, 0.8);
 }
 
 
