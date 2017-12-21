@@ -29,7 +29,7 @@ function set_cluster(node, cluster) {
 }
 
 // Color a node
-function set_root_node(state) {
+function set_root_node_style(state) {
 	g.node(state).style = "fill: #f77";
 }
 
@@ -75,13 +75,20 @@ function add_to_dagre_vizu(nodes, edges) {
 
 function addNodes(nodes) {
 	for(i = 0; i < nodes.length; ++i) {
-		add_node(nodes[i].short_url, nodes[i].name);
+		let cNode = nodes[i];
+		add_node(cNode.short_url, cNode.name);
+		style_node_default(cNode.short_url);
+
+		if(cNode.isRoot) {
+			set_root_node_style(cNode.short_url);
+		}
 	}
 }
 
 function addEdges(edges) {
 	for(i = 0; i < edges.length; ++i) {
-		add_edge(edges[i].source, edges[i].target, 'a');
+		let cEdge = edges[i];
+		add_edge(cEdge.source, cEdge.target, cEdge.language);
 	}
 }
 
@@ -96,6 +103,8 @@ function re_render() {
 	zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
 	//zoom_handler.translateBy(svg, width - g.graph().width,  (height/2) - (g.node(root_node_id).y));
 }
+
+
 
 function set_from_json_go(jsonTree) {
 	clear();

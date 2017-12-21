@@ -371,8 +371,9 @@ function createNodeAndEdgeListAcc(word, accNodes, accEdges, depth) {
     treatedWords.push(ancestor);
 
     var newEdge = {
-      source: word,
-      target: ancestor
+      source: ancestor,
+      target: word,
+      language: languageCodeMap[get_language_code(ancestor)]
     }
 
     accEdges.push(newEdge);
