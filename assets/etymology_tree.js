@@ -331,7 +331,7 @@ function createJSONChildGo(word, depth) {
   return item;
 }
 
-function createNodeAndEdgeList(word,)
+//function createNodeAndEdgeList(word,)
 
 function get_language_code(short_url) {
   let prefix = 'http://etytree-virtuoso.wmflabs.org/dbnary/eng/';
