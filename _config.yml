@@ -1,0 +1,14 @@
+title: EEP
+description: English Etymology Project
+author: Pierre ML
+
+baseurl: /etymology-graph
+url: https://csbenz.github.io
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+
+exclude: ["Readme.md"]
