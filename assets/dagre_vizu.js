@@ -17,7 +17,7 @@ var currRoot;
 
 var margin = {top: 20, right: 0, bottom: 0, left: 0};
 var width = 1000 - margin.left - margin.right;
-var height = 420 - margin.top - margin.bottom;
+var height = 450 - margin.top - margin.bottom;
 
 var svg = d3.select("#vizu_svg").append("svg")
 	//.attr("width", width + margin.right + margin.left)
@@ -26,7 +26,6 @@ var svg = d3.select("#vizu_svg").append("svg")
 	.attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0 0 " + width + " " + height);
 var inner = svg.append("g");
-	//.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Create the input graph
 var g;
@@ -261,15 +260,19 @@ function set_node_listeners() {
 }
 
 function centerGraphOnPoint(node, delay=500, duration=700) {
+	if(!node){
+		return;
+	}
+	
 	function transform_fun() {
-		  return d3.zoomIdentity
-		      .translate((width/2)-g.node(node).x, (height/2)-g.node(node).y);
-		}
+	  return d3.zoomIdentity
+	      .translate((width/2)-g.node(node).x, (height/2)-g.node(node).y);
+	}
 
-		svg.transition()
-	      .delay(delay)
-	      .duration(duration)
-	      .call(zoom_handler.transform, transform_fun);
+	svg.transition()
+      .delay(delay)
+      .duration(duration)
+      .call(zoom_handler.transform, transform_fun);
 }
 
 // Listener for the show cluster checkbox
