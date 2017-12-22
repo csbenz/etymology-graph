@@ -4,6 +4,7 @@ var div = d3.select("#vizu_svg").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
+const DEFAULT_SCALE = 0.8;
 
 // Variable for the 'do not reset graph on new new word' option
 var noReset = false;
@@ -33,7 +34,6 @@ reset_graph();
 
 var render = new dagreD3.render();
 render(inner, g);
-
 
 var zoom_handler = d3.zoom()
         .scaleExtent([0.02, 8])
@@ -126,6 +126,8 @@ function add_to_dagre_vizu(nodes, edges, root_node, force_no_reset=false) {
 		clear();
 	}
 
+	console.log("CURR " + root_node);
+
 	currRoot = root_node;
 
 	console.log('---');
@@ -210,10 +212,8 @@ function re_render(root_node, initial_render=false) {
 		//zoom_handler.translateBy(svg, (width/2) - g.graph().width + 200,   (height/2) - (g.node(root_node).y)); //g.node(root_node).y
 		zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
 
-		var scale = 0.8;
-
-		zoom_handler.scaleBy(svg, scale);
-		zoom_handler.translateBy(svg, (width*scale/2) - g.node(root_node).x + 200,   (height*scale/2) - (g.node(root_node).y));
+		zoom_handler.scaleBy(svg, DEFAULT_SCALE);
+		zoom_handler.translateBy(svg, (width*DEFAULT_SCALE/2) - g.node(root_node).x + 200,   (height*DEFAULT_SCALE/2) - (g.node(root_node).y));
 	}
 
 	zoom_handler.on('start', function() {
@@ -226,17 +226,18 @@ function re_render(root_node, initial_render=false) {
 // Set the listeners for all the nodes (clicks, mouse hover, ...)
 function set_node_listeners() {
 	svg.selectAll("g.node")
-		.on("click", function(id) {
+		.on("click", function(short_url) {
 
 	  		var clickedNode = currNodes.filter(function( obj ) {
-			  return obj.short_url == id;
+			  return obj.short_url == short_url;
 			});
 
 			if(clickedNode && clickedNode[0].isDescendant) {
 				// If the clicked word is already a descendant, get its ancestors
-				get_ancestors_from_short_url(id, true);
+				get_ancestors_from_short_url(short_url, true);
 			} else {
-				get_descendants(id);
+				currRoot = short_url;
+				get_descendants(short_url);
 			}
 
 	  	})
@@ -266,5 +267,12 @@ function showClustersListener(checkbox) {
 // Listener for the no reset checkbox
 function noResetListener(checkbox) {
 	noReset = checkbox.checked;
+}
+
+function goToRootNodeButtonListener() {
+	zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
+
+	zoom_handler.scaleBy(svg, DEFAULT_SCALE);
+	zoom_handler.translateBy(svg, (width*DEFAULT_SCALE/2) - g.node(currRoot).x + 200,   (height*DEFAULT_SCALE/2) - (g.node(currRoot).y));
 }
 

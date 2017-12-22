@@ -4,7 +4,7 @@ title: Algorithm
 description: Etymology Graph
 ---
 
-<div id="vizu_input">
+<div id="vizu_input" >
 	<div id="input_div" >
 	    <form name="myForm" action="javascript:handleInput(search_word.value)"> 
 	         <input type="text" name="search_word" id="search_word" placeholder="Search">
@@ -16,6 +16,9 @@ description: Etymology Graph
 		<label for="show_cluster_checkbox">Show cluster</label>
 		<input type="checkbox" id="no_reset_checkbox" name="no_reset_checkbox" onchange='noResetListener(this);'>
 		<label for="no_reset_checkbox">Do not reset on new word</label>
+	</div>
+	<div>
+		<button type="button" onclick="goToRootNodeButtonListener()">Center on root node</button>
 	</div>
 
 </div>
