@@ -9,8 +9,8 @@ var div = d3.select("#vizu_svg").append("div")
 var noReset = false;
 
 // Variables that keep arrays of the current nodes and edges in the graph
-var currNodes;
-var currEdges;
+var currNodes = [];
+var currEdges = [];
 var currRoot;
 
 
