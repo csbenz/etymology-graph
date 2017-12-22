@@ -52,14 +52,13 @@ function set_second_order_root_node_style(state) {
 
 function style_node_default(state) {
 	var node = g.node(state);
-	if(node) { // TODO otherwise sometimes bug when not loaded
-	  	node.rx = node.ry = 5;
-	}
+	node.rx = node.ry = 5;
 }
 
 var noReset = false;
 
 
+// Clear the visualization
 function clear() {
 	currNodes = [];
 	currEdges = [];
@@ -88,19 +87,16 @@ var currRoot;
 
 // Called on new search entered by user and after creating the initial data strcture
 function add_to_dagre_vizu(nodes, edges, root_node) {
-	clear();
+	if(!noReset) {
+		clear();
+	}
 
-	//currNodes = nodes;
-	//currEdges = edges;
 	currRoot = root_node;
 
 	addNodesToVizu(nodes);
 	addEdgesToVizu(edges);
 
 	re_render(root_node);
-	//set_node_listeners();
-
-
 }
 
 
@@ -169,7 +165,6 @@ function re_render(root_node) {
     render(inner, g);
 
    
-
 	//zoom_handler.translateBy(svg, width/2 - g.graph().width + 200,   (height/2) - (g.node(root_node).y)); //g.node(root_node).y
 
 	zoom_handler.on('start', function() {
@@ -245,8 +240,7 @@ function showClustersListener(checkbox) {
 }
 
 function noResetListener(checkbox) {
-	re_render('');
-	//noReset = checkbox.checked;
+	noReset = checkbox.checked;
 }
 
 /*
