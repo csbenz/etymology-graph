@@ -1881,7 +1881,7 @@ line;code;canonical name;category;type;family code;family;sortkey?;autodetect?;e
 1880;ekp;Ekpeye;Ekpeye language;;alv-von;Volta-Niger;;;;Latn;;
 1881;ekr;Yace;Yace language;;;;;;;;
 1882;eky;Eastern Kayah;Eastern Kayah language;;kar;Karen;;;;Kali;;
-1883;el;Greek;Greek language;;grk;Hellenic;sortkey;;;Grek,Brai;Modern Greek,Neo-Hellenic;standard characters
+1883;ell;Greek;Greek language;;grk;Hellenic;sortkey;;;Grek,Brai;Modern Greek,Neo-Hellenic;standard characters
 1884;ele;Elepi;Elepi language;;qfa-tor;Torricelli;;;;Latn;;
 1885;elh;El Hugeirat;El Hugeirat language;;;;;;;;
 1886;eli;Nding;Nding language;;;;;;;;
@@ -5698,7 +5698,7 @@ line;code;canonical name;category;type;family code;family;sortkey?;autodetect?;e
 5697;rnn;Roon;Roon language;;poz-hce;Halmahera-Cenderawasih;;;;;;
 5698;rnp;Rongpo;Rongpo language;;;;;;;;
 5699;rnw;Rungwa;Rungwa language;;bnt;Bantu;;;;Latn;;
-5700;ro;Romanian;Romanian language;;roa;Romance;sortkey;;;Latn,Cyrl;Daco-Romanian,Roumanian,Rumanian;
+5700;ron;Romanian;Romanian language;;roa;Romance;sortkey;;;Latn,Cyrl;Daco-Romanian,Roumanian,Rumanian;
 5701;roa-ang;Angevin;Angevin language;;roa-oil;Oïl;sortkey;;exceptional;Latn;Craonnais,Baugeois,Saumurois;
 5702;roa-bbn;Bourbonnais-Berrichon;Bourbonnais-Berrichon language;;roa-oil;Oïl;sortkey;;exceptional;Latn;Bourbonnais,Berrichon,Moulins,Allier,Nivernais,Haut-Berrichon,Bas-Berrichon;
 5703;roa-brg;Bourguignon;Bourguignon language;;roa-oil;Oïl;sortkey;;exceptional;Latn;Burgundian,Bregognon,Dijonnais,Morvandiau,Morvandeau,Morvan,Bourguignon-Morvandiau,Mâconnais,Brionnais,Brionnais-Charolais,Auxerrois,Beaunois,Langrois,Valsaônois,Verduno-Chalonnais,Sédelocien;
@@ -6722,7 +6722,7 @@ line;code;canonical name;category;type;family code;family;sortkey?;autodetect?;e
 6721;tqt;Western Totonac;Western Totonac language;;nai-ttn;Totonacan;;;;Latn;;
 6722;tqu;Touo;Touo language;;;;;;;;
 6723;tqw;Tonkawa;Tonkawa language;;;;;;;;
-6724;tr;Turkish;Turkish language;;trk-ogz;Oghuz;;;;Latn;;
+6724;tur;Turkish;Turkish language;;trk-ogz;Oghuz;;;;Latn;;
 6725;tra;Tirahi;Tirahi language;;;;;;;;
 6726;trb;Terebu;Terebu language;;poz-ocw;Western Oceanic;;;;;;
 6727;trc;Copala Triqui;Copala Triqui language;;omq-tri;Trique;;;;Latn;;

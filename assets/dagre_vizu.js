@@ -8,6 +8,7 @@ var g;
 reset_graph();
 
 function add_node(state, name) {
+	//console.log('ADDING ' + state + " " + name);
 	var existingNodes = g.nodes();
 
 	if(!existingNodes.includes(state)) {
@@ -44,7 +45,7 @@ function set_root_node_style(state) {
 	g.node(state).style = "fill: #f77";
 }
 
-function set_descended_node_style(state) {
+function set_second_order_root_node_style(state) {
 	g.node(state).style = "fill: #7f7";
 }
 
@@ -82,6 +83,7 @@ var currNodes;
 var currEdges;
 var currRoot;
 
+// Called on new search entered by user and after creating the initial data strcture
 function add_to_dagre_vizu(nodes, edges, root_node) {
 	clear();
 
@@ -111,6 +113,7 @@ function addNodeToVizu(node) {
 	let show_clusters = document.getElementById('show_cluster_checkbox').checked;
 
 	add_node(node.short_url, node.name);
+	//re_render(node.short_url);
 	style_node_default(node.short_url);
 
 	if(show_clusters) {
@@ -122,8 +125,8 @@ function addNodeToVizu(node) {
 		set_root_node_style(node.short_url);
 	}
 
-	if(node.isDescended){
-		set_descended_node_style(node.short_url);
+	if(node.isSecondOrderRoot){
+		set_second_order_root_node_style(node.short_url);
 	}
 }
 
@@ -136,7 +139,10 @@ function addEdgesToVizu(edges) {
 // Edge object to edge in vizu
 function addEdgeToVizu(edge) {
 	currEdges.push(edge);
-	add_edge(edge.source, edge.target, edge.language);
+
+	let show_clusters = document.getElementById('show_cluster_checkbox').checked;
+
+	add_edge(edge.source, edge.target, show_clusters ? '' : edge.language);
 }
 
 function hide_tooltip() {

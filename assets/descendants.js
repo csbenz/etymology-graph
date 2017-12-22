@@ -74,6 +74,7 @@ function queryDescendants(root_short_url) {
 function createDesendantTree(allDescendents, root_short_url) {
 
   var allDescendantNames = allDescendents.map(x => x.descendant1);
+  console.log(allDescendantNames);
 
   var allDescendantsDict = allDescendents.reduce(function(map, obj) {
 	    map[obj.descendant1] = obj.label1;
@@ -81,35 +82,26 @@ function createDesendantTree(allDescendents, root_short_url) {
 	}, {});
 
 
-  let descendantNodes = [];
+  let promises = [];
   allDescendents.forEach(function(descendent) {
   	var short_url = descendent.descendant1;
   	var name = descendent.label1;
   	var language_code = get_language_code(short_url);
 
 /*
-    if(!g.nodes().includes(short_url) && short_url != root_short_url) {
-    	add_node(short_url, name);
-    } else {
-    	console.log('Ignored already existing descendant: ' + short_url);
-    }
-    */
-
     if(!g.nodes().includes(short_url)) {
 	  	add_node(short_url, name);
 	} else {
 	  	console.log('Ignored already existing descendant: ' + short_url);
 	}
+	*/
 
-    getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendantNames, root_short_url).then(function(result) {
-    	//console.log('got dir anc for   ' + result);
-    	//re_render(root_short_url);
-    });
-
-
+    promises.push(getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendantNames, root_short_url));
   });
 
-  
+  Promise.all(promises).then(function() {
+	re_render(root_short_url);
+  });
 }
 
 function getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendents, root_short_url) {
@@ -125,8 +117,6 @@ function getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendents, r
 	      request.onload = function(){
 
 	          let ancestorsLines = d3.csvParse(request.responseText);
-
-	          let promisess = [];
 
 	          var word_name; // TODO get before looping
 	          var etymologicallyRelatedTo = [];
@@ -145,28 +135,9 @@ function getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendents, r
 
 	                  console.log('is related to: ' + ancestor_short_url);
 
-	                  
-	                  
-	                  if(allDescendents.includes(ancestor_short_url)) {
-	                  	let language = languageCodeMap[get_language_code(short_url)];
-	                  	//console.log('Adding edge: ' + ancestor_short_url + ' TO ' + short_url);
-	                  	add_edge(ancestor_short_url, short_url,  language);
-	                  	re_render(short_url);
-	                  	
-	                  } else {
-	                  	console.log('no link');
-	                  }
-	                  //add_edge(ancestor_short_url, short_url, 'new');
-	                 // re_render(short_url);
-
-	                  //addAncestor(short_url, ancestor_short_url);
-
-	                 // promisess.push(search_url(ancestor_short_url, depth + 1));
-
 	                 } else if(d.predicate.includes('etymologicallyEquivalentTo')) {
 	                  let equivalentWord = d.object;
 	                  console.log('Equivalent to: ' + equivalentWord);
-	                  //addEquivalent(short_url, equivalentWord);
 	                 } else if(d.predicate.includes('http://www.w3.org/2000/01/rdf-schema#seeAlso')) {
 	                  wiktionaryLink = d.object;
 	                  wiktionaryLinkMap[short_url] = wiktionaryLink;
@@ -184,19 +155,28 @@ function getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendents, r
 			  nodeItem["wiktionary_link"] = wiktionaryLink;
 
 			  if(root_short_url == short_url){
-			    nodeItem["isDescended"] = true;
+			    nodeItem["isSecondOrderRoot"] = true;
+			  } else {
+			  	nodeItem["isDescendant"] = true;
 			  }
-			  
-			  console.log('XUV ' + nodeItem);
-			  addNodeToVizu(nodeItem);
-	            
 
+			  addNodeToVizu(nodeItem);
+			  //re_render(short_url);
+
+			  etymologicallyRelatedTo.forEach(function(ancestor_short_url) {
+		  		if(allDescendents.includes(ancestor_short_url)) {
+		  			var newEdge = {
+				      source: ancestor_short_url,
+				      target: short_url,
+				      language: language_name
+				    }
+				    addEdgeToVizu(newEdge);
+                  	//add_edge(ancestor_short_url, short_url,  language_name);
+                  	//re_render(short_url);
+                  }
+			  });
+	            
 	          resolve(short_url);
-	/*
-	        Promise.all(promisess).then(function() {
-	          resolve(short_url);
-	        });
-	        */
 
 	      };
 	      request.onerror = function() {

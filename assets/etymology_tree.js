@@ -396,3 +396,12 @@ function get_language_code(short_url) {
 
   return language_code;
 }
+
+function get_language_name(language_code) {
+  let tmp = languageCodeMap(language_code);
+  if(!tmp) {
+    tmp = languageCodeMap(language_code.slice(0,-1));
+  }
+
+  return tmp;
+}
