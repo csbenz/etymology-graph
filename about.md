@@ -20,6 +20,8 @@ The lecturer for the course is [Kirell Benzi](https://people.epfl.ch/204172).
 
 The [GitHub repository](https://github.com/Nevaada/Project-Etymology-graph) of the website.
 
-The [Database website](http://www1.icsi.berkeley.edu/~demelo/etymwn/) where you can download the database in TSV format.
+The [Wikimedia project](https://meta.wikimedia.org/wiki/Grants:IEG/A_visual_representation_of_the_etymology_of_words_using_trees) which endpoint we use as data source.
+
+The [Datasource endpoint](http://etytree-virtuoso.wmflabs.org/sparql).
 
 The [webpage of the DataViz course](http://isa.epfl.ch/imoniteur_ISAP/!itffichecours.htm?ww_i_matiere=2217640779&ww_x_anneeAcad=2017-2018&ww_i_section=950840).
