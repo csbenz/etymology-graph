@@ -71,8 +71,7 @@ function createCORSRequest(method, url){
     return xhr;
 }
 
-function get_ancestors(word) {
-  let short_url = `http://etytree-virtuoso.wmflabs.org/dbnary/eng/__ee_1_${word}`;
+function get_ancestors_from_short_url(short_url, force_no_reset=false) {
 
   // Initialize vars
   var rootWord = short_url;
@@ -91,16 +90,20 @@ function get_ancestors(word) {
     console.log(equivalentMap);
     console.log(wordNameMap);
 
-    treatedWords = [];
     var EN = createNodeAndEdgeList(rootWord);
     var accNodes = EN.accNodess;
     var accEdges = EN.accEdgess;
 
-    add_to_dagre_vizu(accNodes, accEdges, short_url);
+    add_to_dagre_vizu(accNodes, accEdges, short_url, force_no_reset);
 
   }, function(err) {
     console.log(err);
   });
+}
+
+function get_ancestors(word) {
+  let short_url = `http://etytree-virtuoso.wmflabs.org/dbnary/eng/__ee_1_${word}`;
+  get_ancestors_from_short_url(short_url);
 }
 
 

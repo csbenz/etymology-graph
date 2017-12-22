@@ -122,12 +122,23 @@ function reset_graph() {
 }
 
 // Called on new search entered by user and after creating the initial data strcture
-function add_to_dagre_vizu(nodes, edges, root_node) {
-	if(!noReset) {
+function add_to_dagre_vizu(nodes, edges, root_node, force_no_reset=false) {
+	console.log(force_no_reset);
+
+	if(!force_no_reset && !noReset) {
 		clear();
 	}
+	/*
+	if(rst) {
+		clear();
+	}
+	*/
 
 	currRoot = root_node;
+
+	console.log('---');
+	console.log(nodes);
+	console.log(edges);
 
 	addNodesToVizu(nodes);
 	addEdgesToVizu(edges);
@@ -253,8 +264,7 @@ function set_node_listeners() {
 
 			if(clickedNode && clickedNode[0].isDescendant) {
 				// If the clicked word is already a descendant, get its ancestors
-				console.log('is descendant');
-				get_ancestors(id);
+				get_ancestors_from_short_url(id, true);
 			} else {
 				get_descendants(id);
 			}
