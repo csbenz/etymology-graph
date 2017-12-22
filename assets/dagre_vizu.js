@@ -210,7 +210,13 @@ function re_render(root_node, initial_render=false) {
     render(inner, g);
 
    	if(initial_render) {
-		zoom_handler.translateBy(svg, width/2 - g.graph().width + 200,   (height/2) - (g.node(root_node).y)); //g.node(root_node).y
+		//zoom_handler.translateBy(svg, (width/2) - g.graph().width + 200,   (height/2) - (g.node(root_node).y)); //g.node(root_node).y
+		zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
+
+		var scale = 0.8;
+
+		zoom_handler.scaleBy(svg, scale);
+		zoom_handler.translateBy(svg, (width*scale/2) - g.node(root_node).x + 200,   (height*scale/2) - (g.node(root_node).y)); //g.node(root_node).y
 	}
 
 	zoom_handler.on('start', function() {
@@ -218,35 +224,6 @@ function re_render(root_node, initial_render=false) {
 	})
 
 	set_node_listeners();
-/*
-	var allNodes = g.nodes();
-	for(i = 0; i < allNodes.length; ++i) {
-		style_node_default(allNodes[i]);
-
-	}
-	*/
-
-	
-
-	/*
-
-	var scale = width / g.graph().width; //Math.min(width / g.graph().width, height / g.graph().width);;
-	zoom_handler.scaleBy(svg, scale);
-
-	zoom_handler.translateBy(svg, (width/(2*scale)  - width),  (height/2) - (g.node(root_node_id).y));
-
-
-	var scale = width / g.graph().width; //Math.min(width / g.graph().width, height / g.graph().width);;
-	//zoom_handler.scaleBy(svg, scale);
-	//zoom_handler.translateBy(svg, (width  - (g.graph().width ))* scale*2,  (height/2) - (g.node(root_node_id).y));
-
-	zoom_handler.scaleBy(svg, scale);
-	var screenOrigin = 960;
-	zoom_handler.translateBy(svg, screenOrigin - (screenOrigin - this.zoom.translate()[0]) * scale / this.zoom.scale(),  (height/2) - (g.node(root_node_id).y)); // (width/2 - (g.node(root_node_id).x - width)) * scale
-
-	
-	console.log(width + " " + g.graph().width + " " + scale);
-*/
 }
 
 // Set the listeners for all the nodes (clicks, mouse hover, ...)
