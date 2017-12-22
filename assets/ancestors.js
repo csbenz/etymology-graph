@@ -111,16 +111,11 @@ function get_ancestors(word) {
 // Takes a root word and recursively searches for its ancestors in the datasource. Creates arrays and maps to store the returned data
 function search_url(short_url, depth) {
   return new Promise(function(resolve, reject) {
-    if(short_url.includes('_1_')) {
-      console.log('________1_ ' + short_url);
-    }
-
 
     if(depth > MAX_DEPTH) {
       resolve();
       return;
     }
-
 
     if(traversedWords.includes(short_url)) {
       resolve();
@@ -228,7 +223,6 @@ function getDirectAncestorsMany(short_urls) {
 
   short_urls.forEach(function(short_url) {
     let direct_ancestors = getDirectAncestors(short_url);
-    //console.log('direct ancestors: ' + direct_ancestors);
     ancestors = ancestors.concat(direct_ancestors);
   });
 
@@ -284,12 +278,9 @@ function createNodeAndEdgeListAcc(word, accNodes, accEdges, depth) {
 
   });
 
-
   return {
     accNodess: accNodes,
     accEdgess: accEdges
   };
 
-
 }
-
