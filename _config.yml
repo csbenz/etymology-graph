@@ -12,3 +12,4 @@ kramdown:
     css_class: 'highlight'
 
 exclude: ["Readme.md"]
+theme: jekyll-theme-cayman
