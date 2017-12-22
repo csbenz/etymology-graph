@@ -162,10 +162,10 @@ function search_url(short_url, depth) {
     if (request){
       request.onload = function() {
 
-          let aa = d3.csvParse(request.responseText);
+          let ancestors = d3.csvParse(request.responseText);
 
           let promises = [];
-          aa.forEach(function(d) {
+          ancestors.forEach(function(d) {
 
                  if(d.predicate.includes('label')) {
                     let word_name = d.object;
@@ -303,7 +303,7 @@ function createJSONChildDepth(word, depth) {
   item["name"] = equs.map(x => wordNameMap[x]).join(", ");
   item["short_url"] = word;
   item["language_code"] = language_code;
-  item["language_name"] = languageCodeMap[language_code];
+  item["language_name"] = language_name;
   item["wiktionary_link"] = wiktionaryLinkMap[word];
   item["depth"] = depth
 
@@ -343,18 +343,18 @@ function createNodeAndEdgeListAcc(word, accNodes, accEdges, depth) {
   let language_code = get_language_code(word);
   let language_name = languageCodeMap[language_code];
 
-  let item = {};
-  item["name"] = equs.map(x => wordNameMap[x]).join(", ");
-  item["short_url"] = word;
-  item["language_code"] = language_code;
-  item["language_name"] = languageCodeMap[language_code];
-  item["wiktionary_link"] = wiktionaryLinkMap[word];
+  let nodeItem = {};
+  nodeItem["name"] = equs.map(x => wordNameMap[x]).join(", ");
+  nodeItem["short_url"] = word;
+  nodeItem["language_code"] = language_code;
+  nodeItem["language_name"] = languageCodeMap[language_code];
+  nodeItem["wiktionary_link"] = wiktionaryLinkMap[word];
 
   if(depth == 0){
-    item["isRoot"] = true;
+    nodeItem["isRoot"] = true;
   }
 
-  accNodes.push(item);
+  accNodes.push(nodeItem);
 
   let ancestors = getDirectAncestorsMany(equs);
 

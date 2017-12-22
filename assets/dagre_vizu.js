@@ -44,6 +44,10 @@ function set_root_node_style(state) {
 	g.node(state).style = "fill: #f77";
 }
 
+function set_descended_node_style(state) {
+	g.node(state).style = "fill: #7f7";
+}
+
 function style_node_default(state) {
 	var node = g.node(state);
   	node.rx = node.ry = 5;
@@ -81,12 +85,12 @@ var currRoot;
 function add_to_dagre_vizu(nodes, edges, root_node) {
 	clear();
 
-	currNodes = nodes;
-	currEdges = edges;
+	//currNodes = nodes;
+	//currEdges = edges;
 	currRoot = root_node;
 
-	addNodes(nodes);
-	addEdges(edges);
+	addNodesToVizu(nodes);
+	addEdgesToVizu(edges);
 
 	re_render(root_node);
 	//set_node_listeners();
@@ -95,30 +99,44 @@ function add_to_dagre_vizu(nodes, edges, root_node) {
 }
 
 
-function addNodes(nodes) {
-	let show_clusters = document.getElementById('show_cluster_checkbox').checked;
-
+function addNodesToVizu(nodes) {
 	for(i = 0; i < nodes.length; ++i) {
-		let cNode = nodes[i];
-		add_node(cNode.short_url, cNode.name);
-		style_node_default(cNode.short_url);
-
-		if(show_clusters) {
-			add_cluster(cNode.language_name);
-			set_cluster(cNode.short_url, cNode.language_name)
-		}
-
-		if(cNode.isRoot) {
-			set_root_node_style(cNode.short_url);
-		}
+		addNodeToVizu(nodes[i]);
 	}
 }
 
-function addEdges(edges) {
-	for(i = 0; i < edges.length; ++i) {
-		let cEdge = edges[i];
-		add_edge(cEdge.source, cEdge.target, cEdge.language);
+// node object to node in vizu
+function addNodeToVizu(node) {
+	currNodes.push(node);
+	let show_clusters = document.getElementById('show_cluster_checkbox').checked;
+
+	add_node(node.short_url, node.name);
+	style_node_default(node.short_url);
+
+	if(show_clusters) {
+		add_cluster(node.language_name);
+		set_cluster(node.short_url, node.language_name);
 	}
+
+	if(node.isRoot) {
+		set_root_node_style(node.short_url);
+	}
+
+	if(node.isDescended){
+		set_descended_node_style(node.short_url);
+	}
+}
+
+function addEdgesToVizu(edges) {
+	for(i = 0; i < edges.length; ++i) {
+		addEdgeToVizu(edges[i]);
+	}
+}
+
+// Edge object to edge in vizu
+function addEdgeToVizu(edge) {
+	currEdges.push(edge);
+	add_edge(edge.source, edge.target, edge.language);
 }
 
 function hide_tooltip() {
