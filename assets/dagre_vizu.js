@@ -246,7 +246,19 @@ function re_render(root_node) {
 function set_node_listeners() {
 	svg.selectAll("g.node")
 		.on("click", function(id) {
-	  		getDescendents(id);
+
+	  		var clickedNode = currNodes.filter(function( obj ) {
+			  return obj.short_url == id;
+			});
+
+			if(clickedNode && clickedNode[0].isDescendant) {
+				// If the clicked word is already a descendant, get its ancestors
+				console.log('is descendant');
+				search_root_word(id);
+			} else {
+				getDescendents(id);
+			}
+
 	  	})
 	  	.on("mouseover", function(d) {
 	  	   let wiktionaryLink = wiktionaryLinkMap[d];
@@ -276,22 +288,3 @@ function noResetListener(checkbox) {
 	noReset = checkbox.checked;
 }
 
-function strToHexColor(str) {
-	return intToRGB(hashCode(str));
-}
-
-function hashCode(str) {
-    var hash = 0;
-    for (var i = 0; i < str.length; i++) {
-       hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return hash;
-} 
-
-function intToRGB(i){
-    var c = (i & 0x00FFFFFF)
-        .toString(16)
-        .toUpperCase();
-
-    return "00000".substring(0, 6 - c.length) + c;
-}
