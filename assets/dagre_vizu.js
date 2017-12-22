@@ -154,7 +154,7 @@ function addNodeToVizu(node) {
 
 	add_node(node.short_url, node.name);
 	currNodes.push(node);
-	//re_render(node.short_url);
+
 	style_node_default(node.short_url);
 
 	if(show_clusters) {
@@ -214,6 +214,8 @@ function re_render(root_node, initial_render=false) {
 
 		zoom_handler.scaleBy(svg, DEFAULT_SCALE);
 		zoom_handler.translateBy(svg, (width*DEFAULT_SCALE/2) - g.node(root_node).x + 200,   (height*DEFAULT_SCALE/2) - (g.node(root_node).y));
+	} else {
+		centerGraphOnPoint(root_node);
 	}
 
 	zoom_handler.on('start', function() {
@@ -252,10 +254,22 @@ function set_node_listeners() {
 	       div .html(
 	         '<a href= "' + wiktionaryLink + '" target="_blank">' + "Wiktionary page" + "</a>" + 
 	         "<br/>" )     
-	         .style("left", (d3.event.pageX) + "px")   //d3.page.eventX           
+	         .style("left", (d3.event.pageX) + "px")          
 	         .style("top", (d3.event.pageY - 25) + "px");
 	    });
 	    
+}
+
+function centerGraphOnPoint(node, delay=500, duration=700) {
+	function transform_fun() {
+		  return d3.zoomIdentity
+		      .translate((width/2)-g.node(node).x, (height/2)-g.node(node).y);
+		}
+
+		svg.transition()
+	      .delay(delay)
+	      .duration(duration)
+	      .call(zoom_handler.transform, transform_fun);
 }
 
 // Listener for the show cluster checkbox
@@ -270,9 +284,7 @@ function noResetListener(checkbox) {
 }
 
 function goToRootNodeButtonListener() {
-	zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
-
-	zoom_handler.scaleBy(svg, DEFAULT_SCALE);
-	zoom_handler.translateBy(svg, (width*DEFAULT_SCALE/2) - g.node(currRoot).x + 200,   (height*DEFAULT_SCALE/2) - (g.node(currRoot).y));
+	centerGraphOnPoint(currRoot, 0);
+	
 }
 
