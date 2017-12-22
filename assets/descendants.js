@@ -88,14 +88,6 @@ function createDesendantTree(allDescendents, root_short_url) {
   	var name = descendent.label1;
   	var language_code = get_language_code(short_url);
 
-/*
-    if(!g.nodes().includes(short_url)) {
-	  	add_node(short_url, name);
-	} else {
-	  	console.log('Ignored already existing descendant: ' + short_url);
-	}
-	*/
-
     promises.push(getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendantNames, root_short_url));
   });
 

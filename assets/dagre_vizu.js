@@ -12,10 +12,11 @@ function add_node(state, name) {
 	var existingNodes = g.nodes();
 
 	//if(!existingNodes.includes(state)) {
+	if(!currNodes.map(n => n.short_url).includes(state)) {
 		g.setNode(state, {
 			label: name
 		});
-	//}
+	}
 }
 
 function add_edge(from, to, label_name) {
@@ -111,10 +112,11 @@ function addNodesToVizu(nodes) {
 
 // node object to node in vizu
 function addNodeToVizu(node) {
-	currNodes.push(node);
+	
 	let show_clusters = document.getElementById('show_cluster_checkbox').checked;
 
 	add_node(node.short_url, node.name);
+	currNodes.push(node);
 	//re_render(node.short_url);
 	style_node_default(node.short_url);
 
@@ -175,6 +177,15 @@ function re_render(root_node) {
 	})
 
 	set_node_listeners();
+/*
+	var allNodes = g.nodes();
+	for(i = 0; i < allNodes.length; ++i) {
+		style_node_default(allNodes[i]);
+
+	}
+	*/
+
+	
 
 	/*
 
