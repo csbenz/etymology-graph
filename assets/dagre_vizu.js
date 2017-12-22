@@ -1,4 +1,8 @@
 
+var div = d3.select("#vizu_svg").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
 // Create the input graph
 var g;
 reset_graph();
@@ -38,10 +42,18 @@ function style_node_default(state) {
   	node.rx = node.ry = 5;
 }
 
-var current_json;
 var noReset = false;
 
+
+function clear() {
+	currNodes = [];
+	currEdges = [];
+	currRoot = undefined;
+	reset_graph();
+}
+
 function reset_graph() {
+	hide_tooltip();
 	if(!noReset) {
 		g = new dagreD3.graphlib.Graph({directed:true, compound:true, multigraph:false}).setGraph({});
 		g.setGraph({
@@ -55,23 +67,21 @@ function reset_graph() {
 	}
 }
 
-function clear() {
-	current_json = [];
-	reset_graph();
-}
+var currNodes;
+var currEdges;
+var currRoot;
 
 function add_to_dagre_vizu(nodes, edges, root_node) {
-	console.log(nodes);
-	console.log(edges);
-
 	clear();
+
+	currNodes = nodes;
+	currEdges = edges;
+	currRoot = root_node;
 
 	addNodes(nodes);
 	addEdges(edges);
 
-	g.graph().transition = function(selection) {
-      return selection.transition().duration(500);
-    };
+	
 
 	re_render(root_node);
 	set_node_listeners();
@@ -81,10 +91,17 @@ function add_to_dagre_vizu(nodes, edges, root_node) {
 
 
 function addNodes(nodes) {
+	let show_clusters = document.getElementById('show_cluster_checkbox').checked;
+
 	for(i = 0; i < nodes.length; ++i) {
 		let cNode = nodes[i];
 		add_node(cNode.short_url, cNode.name);
 		style_node_default(cNode.short_url);
+
+		if(show_clusters) {
+			add_cluster(cNode.language_name);
+			set_cluster(cNode.short_url, cNode.language_name)
+		}
 
 		if(cNode.isRoot) {
 			set_root_node_style(cNode.short_url);
@@ -99,22 +116,31 @@ function addEdges(edges) {
 	}
 }
 
+function hide_tooltip() {
+	div.transition()		
+            .duration(150)		
+            .style("opacity", 0);
+	
+}
+
 function re_render(root_node) {
+	g.graph().transition = function(selection) {
+      return selection.transition().duration(500);
+    };
+
+     // Reset zoom
+	//zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
+
 	// re-render
 	var render = new dagreD3.render();
     render(inner, g);
 
-console.log(height);
-console.log(g.graph().width);
-    // Reset zoom
-	zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
+   
 
-	zoom_handler.translateBy(svg, width - g.graph().width,  (height/2) + (g.graph().width/2)); //g.node(root_node).y
+	//zoom_handler.translateBy(svg, width/2 - g.graph().width + 200,   (height/2) - (g.node(root_node).y)); //g.node(root_node).y
 
 	zoom_handler.on('start', function() {
-		 div.transition()		
-            .duration(150)		
-            .style("opacity", 0);
+		hide_tooltip();
 	})
 
 	/*
@@ -138,9 +164,7 @@ console.log(g.graph().width);
 */
 }
 
-var div = d3.select("#vizu_svg").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
+
 
 function set_node_listeners() {
 	svg.selectAll("g.node")
@@ -166,48 +190,6 @@ function set_node_listeners() {
 
 
 
-
-
-
-
-function child_iter(node, show_clusters) {
-	var parent_id = node['short_url'];
-	var children = node['children'];
-
-	if(!children) {
-		return;
-	}
-
-	//setTimeout(function(){
-		children.forEach(function(child) {
-			var child_name = child['name'];
-			var child_id = child['short_url'];
-			var child_language_name = child['language_name'];
-			var child_children = child['children'];
-
-			var label_name = get_node_label_text(child_name, child_language_name);
-			var edge_name = show_clusters ? '' : child_language_name;
-
-		    add_node(child_id, label_name);
-			style_node_default(child_id);
-
-			add_edge(child_id, parent_id, edge_name);
-
-			if(show_clusters) {
-				add_cluster(child_language_name);
-				set_cluster(child_id, child_language_name);
-			}
-			
-			if(child_children) {
-				child_iter(child, show_clusters);
-			}			
-		});
-		// re-render
-	//	var render = new dagreD3.render();
-	//	render(inner, g);
-	//}, 0);
-}
-
 function get_node_label_text(name, language_name) {
 	return name;
 	//return name + "\n" + "<span style='font-size:16px'>" + language_name + "</span>";
@@ -215,7 +197,7 @@ function get_node_label_text(name, language_name) {
 
 function showClustersListener(checkbox) {
 	reset_graph();
-	set_from_json(current_json, checkbox.checked == true);
+	add_to_dagre_vizu(currNodes, currEdges, currRoot);
 }
 
 function noResetListener(checkbox) {
@@ -253,10 +235,15 @@ render(inner, g);
  * ZOOM BEHAVIOUR         
  */
 function zoom_actions(){
-  inner.attr("transform", d3.event.transform);
+  inner.attr("transform", d3.event.transform); //'scale(' + d3.event.transform.k + ')'
 }
 
+//inner.style("transform-origin", "50% 50% 0");
+
 var zoom_handler = d3.zoom()
+        .scaleExtent([0.02, 8])
+        //.translateExtent([[0, 0], [width, height]])
+        //.extent([[0, 0], [width, height]])
     	.on("zoom", zoom_actions);
 zoom_handler(svg);
 

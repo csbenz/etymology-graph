@@ -109,7 +109,7 @@ function search_root_word(word) {
   wiktionaryLinkMap = {};
 
 
-  search_url(short_url, 0).then(function(rr) {
+  search_url(short_url, 0).then(function(result) {
     // executed when collected  data
 
     console.log(ancestorMap);
@@ -118,11 +118,9 @@ function search_root_word(word) {
 
     
     treatedWords = [];
-    //let jsonTree = createJSONChild(rootWord);
-    //console.log(JSON.stringify(jsonTree));
-    var res = createNodeAndEdgeList(rootWord);
-    var accNodes = res.accNodess;
-    var accEdges = res.accEdgess;
+    var EN = createNodeAndEdgeList(rootWord);
+    var accNodes = EN.accNodess;
+    var accEdges = EN.accEdgess;
 
     add_to_dagre_vizu(accNodes, accEdges, short_url);
 
@@ -134,17 +132,16 @@ function search_root_word(word) {
 }
 
 
-var promises = [];
 
 // Takes a root word and recursively searches for its ancestors in the datasource. Creates arrays and maps to store the returned data
-function search_url(short_url, deepness) {
+function search_url(short_url, depth) {
   return new Promise(function(resolve, reject) {
     if(short_url.includes('_1_')) {
       console.log('________1_ ' + short_url);
     }
 
 
-    if(deepness > MAX_DEPTH) {
+    if(depth > MAX_DEPTH) {
       resolve();
       return;
     }
@@ -163,11 +160,11 @@ function search_url(short_url, deepness) {
 
     var request = createCORSRequest("get", url);
     if (request){
-      request.onload = function(){
+      request.onload = function() {
 
           let aa = d3.csvParse(request.responseText);
 
-          let promisess = [];
+          let promises = [];
           aa.forEach(function(d) {
 
                  if(d.predicate.includes('label')) {
@@ -181,7 +178,7 @@ function search_url(short_url, deepness) {
 
                   addAncestor(short_url, ancestor_short_url);
 
-                  promisess.push(search_url(ancestor_short_url, deepness + 1));
+                  promises.push(search_url(ancestor_short_url, depth + 1));
 
                  } else if(d.predicate.includes('etymologicallyEquivalentTo')) {
                   let equivalentWord = d.object;
@@ -193,7 +190,7 @@ function search_url(short_url, deepness) {
                  }
               });
 
-        Promise.all(promisess).then(function() {
+        Promise.all(promises).then(function() {
           resolve(short_url);
         });
 
