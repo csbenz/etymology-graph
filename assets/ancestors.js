@@ -1,7 +1,7 @@
 
 //enter with this function and the word the user submitted
 function handleInput(data) {
-    search_root_word(data);
+    get_ancestors(data);
 }
 
 const MAX_DEPTH = 15;
@@ -71,7 +71,7 @@ function createCORSRequest(method, url){
     return xhr;
 }
 
-function search_root_word(word) {
+function get_ancestors(word) {
   let short_url = `http://etytree-virtuoso.wmflabs.org/dbnary/eng/__ee_1_${word}`;
 
   // Initialize vars

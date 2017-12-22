@@ -254,9 +254,9 @@ function set_node_listeners() {
 			if(clickedNode && clickedNode[0].isDescendant) {
 				// If the clicked word is already a descendant, get its ancestors
 				console.log('is descendant');
-				search_root_word(id);
+				get_ancestors(id);
 			} else {
-				getDescendents(id);
+				get_descendants(id);
 			}
 
 	  	})
