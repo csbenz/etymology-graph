@@ -124,7 +124,7 @@ function search_root_word(word) {
     var accNodes = res.accNodess;
     var accEdges = res.accEdgess;
 
-    add_to_dagre_vizu(accNodes, accEdges);
+    add_to_dagre_vizu(accNodes, accEdges, short_url);
 
     //set_from_json_go(jsonTree);
 
@@ -379,9 +379,6 @@ function createNodeAndEdgeListAcc(word, accNodes, accEdges, depth) {
     accEdges.push(newEdge);
 
     var ret = createNodeAndEdgeListAcc(ancestor, accNodes, accEdges, depth + 1);
-
-    //accNodes.push(ret.accNodess);
-    //accEdges.push(ret.accEdgess);
 
   });
 

@@ -60,7 +60,7 @@ function clear() {
 	reset_graph();
 }
 
-function add_to_dagre_vizu(nodes, edges) {
+function add_to_dagre_vizu(nodes, edges, root_node) {
 	console.log(nodes);
 	console.log(edges);
 
@@ -69,7 +69,14 @@ function add_to_dagre_vizu(nodes, edges) {
 	addNodes(nodes);
 	addEdges(edges);
 
-	re_render();
+	g.graph().transition = function(selection) {
+      return selection.transition().duration(500);
+    };
+
+	re_render(root_node);
+	set_node_listeners();
+
+
 }
 
 
@@ -92,62 +99,25 @@ function addEdges(edges) {
 	}
 }
 
-function re_render() {
+function re_render(root_node) {
 	// re-render
 	var render = new dagreD3.render();
     render(inner, g);
 
+console.log(height);
+console.log(g.graph().width);
     // Reset zoom
-	//zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
-
 	zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
-	//zoom_handler.translateBy(svg, width - g.graph().width,  (height/2) - (g.node(root_node_id).y));
-}
 
+	zoom_handler.translateBy(svg, width - g.graph().width,  (height/2) + (g.graph().width/2)); //g.node(root_node).y
 
+	zoom_handler.on('start', function() {
+		 div.transition()		
+            .duration(150)		
+            .style("opacity", 0);
+	})
 
-function set_from_json_go(jsonTree) {
-	clear();
-
-	current_json = JSON.parse(JSON.stringify(jsonTree));
-
-	var show_clusters_checked = document.getElementById('show_cluster_checkbox').checked;
-	
-	set_from_json(jsonTree, show_clusters_checked);
-}
-
-function set_from_json(json_tree, show_clusters) {
-	// Create root
-	var root_node_name = json_tree['name'];
-	var root_node_language_name = json_tree['language_name'];
-	var root_node_id = json_tree['short_url'];
-
-	var label_name = get_node_label_text(root_node_name, root_node_language_name);
-	add_node(root_node_id, label_name);
-	set_root_node(root_node_id);
-	style_node_default(root_node_id);
-
-	if(show_clusters) {
-		add_cluster(root_node_language_name);
-		set_cluster(root_node_id, root_node_language_name);
-	}
-
-
-
-	// Iterate recursively on children
-	child_iter(json_tree, show_clusters);
-	
-	// re-render
-	var render = new dagreD3.render();
-    render(inner, g);
-
-    // Reset zoom
-	//zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
-
-	zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
-	zoom_handler.translateBy(svg, width - g.graph().width,  (height/2) - (g.node(root_node_id).y));
-
-/*
+	/*
 
 	var scale = width / g.graph().width; //Math.min(width / g.graph().width, height / g.graph().width);;
 	zoom_handler.scaleBy(svg, scale);
@@ -166,15 +136,39 @@ function set_from_json(json_tree, show_clusters) {
 	
 	console.log(width + " " + g.graph().width + " " + scale);
 */
-    svg.selectAll("g.node").on("click", function(id) {
-  		//window.open(wiktionaryLinkMap[id]);
-  		//window.open(id);
-  		getDescendents(id);
-  	});
-
-    //g.node('English').x = 0;
-
 }
+
+var div = d3.select("#vizu_svg").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+function set_node_listeners() {
+	svg.selectAll("g.node")
+		.on("click", function(id) {
+	  		getDescendents(id);
+	  	})
+	  	.on("mouseover", function(d) {
+	  	   let wiktionaryLink = wiktionaryLinkMap[d];
+
+	  	   var xScale = height / g.graph().height;
+	  	   var yScale = width / g.graph().width;
+	       div.transition()
+	         .duration(200)
+	         .style("opacity", .9);
+	       div .html(
+	         '<a href= "' + wiktionaryLink + '" target="_blank">' + "Wiktionary page" + "</a>" + 
+	         "<br/>" )     
+	         .style("left", (d3.event.pageX) + "px")   //d3.page.eventX           
+	         .style("top", (d3.event.pageY - 25) + "px");
+	    });
+	    
+}
+
+
+
+
+
+
 
 function child_iter(node, show_clusters) {
 	var parent_id = node['short_url'];
@@ -241,7 +235,7 @@ var margin = {top: 20, right: 0, bottom: 0, left: 0};
 var width = 1000 - margin.left - margin.right;
 var height = 420 - margin.top - margin.bottom;
 
-var svg = d3.select(".core_div").append("svg")
+var svg = d3.select("#vizu_svg").append("svg")
 	//.attr("width", width + margin.right + margin.left)
     //.attr("height", height + margin.top + margin.bottom);
     .attr("id", "svg_container")
