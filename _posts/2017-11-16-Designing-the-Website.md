@@ -5,7 +5,7 @@ author: Pierre ML
 description: A first post about the site building and the structure
 ---
 ## Process book
-Our process book is a PDF file and can be read <a href="index.md">here</a>.
+Our process book is a PDF file and can be read <a href="index.md" target="_blank">here</a>.
 
 
 ## Choice of GitHub Pages
