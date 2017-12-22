@@ -138,7 +138,7 @@ function add_to_dagre_vizu(nodes, edges, root_node, force_no_reset=false) {
 	addNodesToVizu(nodes);
 	addEdgesToVizu(edges);
 
-	re_render(root_node);
+	re_render(root_node, !force_no_reset);
 }
 
 // Add an array of node objects to the vizu
@@ -197,7 +197,7 @@ function hide_tooltip() {
 }
 
 // Render the graph vizu
-function re_render(root_node) {
+function re_render(root_node, initial_render=false) {
 	g.graph().transition = function(selection) {
       return selection.transition().duration(1000);
     };
@@ -209,8 +209,9 @@ function re_render(root_node) {
 	var render = new dagreD3.render();
     render(inner, g);
 
-   
-	//zoom_handler.translateBy(svg, width/2 - g.graph().width + 200,   (height/2) - (g.node(root_node).y)); //g.node(root_node).y
+   	if(initial_render) {
+		zoom_handler.translateBy(svg, width/2 - g.graph().width + 200,   (height/2) - (g.node(root_node).y)); //g.node(root_node).y
+	}
 
 	zoom_handler.on('start', function() {
 		hide_tooltip();
