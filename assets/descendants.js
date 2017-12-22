@@ -1,51 +1,6 @@
 
-function export_table_to_csv(html, filename) {
-	var csv = [];
-	var rows = document.querySelectorAll("table tr");
-	
-    for (var i = 0; i < rows.length; i++) {
-		var row = [], cols = rows[i].querySelectorAll("td, th");
-		
-        for (var j = 0; j < cols.length; j++) {
-            row.push(cols[j].innerText);
-        }
-        
-		csv.push(row.join(","));		
-	}
-
-    // Download CSV
-    download_csv(csv.join("\n"), filename);
-}
-
-class Data {
-	constructor() {
-		this.traversedWords = [];
-
-		//Map of lists, key is short_url and value is all ancestors
-		this.ancestorMap = {};
-
-		//Map of lists, key is short_url and value is short_url of all equivalent words
-		this.equivalentMap = {};
-
-		//Map of lists, key is short_url and value is short_url of all equivalent words
-		this.wordNameMap = {};
-
-		// Map of 'tuple' ([array of equivalent words, ancestors])
-		this.AncestorTree = [];
-
-		this.wiktionaryLinkMap = {};
-
-		this.treatedWords = [];
-	}
-}
-
-
+// Query the database for the descendants of a word, create the descendant tree, and render the descendant graph
 function getDescendents(root_short_url) {
-	queryDescendants(root_short_url);
-}
-
-function queryDescendants(root_short_url) {
-	//let data = new Data();
 	var jsonQuery = 'http://etytree-virtuoso.wmflabs.org/sparql?default-graph-uri=&query=SELECT+*+{{+SELECT+DISTINCT+?descendant1+?label1+{++++?descendant1+dbetym:etymologicallyRelatedTo*+<${root_short_url}>+.++++OPTIONAL+{++++++++?descendant1+rdfs:label+?tmp1++++++++BIND+(STR(?tmp1)+AS+?label1)++++}+}}+}+&format=application/sparql-results+json&timeout=0&debug=on';
 
 	var csvQuery =  `https://etytree-virtuoso.wmflabs.org/sparql?default-graph-uri=&query=SELECT+*+{{+`
@@ -71,15 +26,10 @@ function queryDescendants(root_short_url) {
     }
 }
 
+// Create and render the descendants of a word
 function createDesendantTree(allDescendents, root_short_url) {
 
   var allDescendantNames = allDescendents.map(x => x.descendant1);
-  console.log(allDescendantNames);
-
-  var allDescendantsDict = allDescendents.reduce(function(map, obj) {
-	    map[obj.descendant1] = obj.label1;
-	    return map;
-	}, {});
 
 
   let promises = [];
@@ -88,7 +38,7 @@ function createDesendantTree(allDescendents, root_short_url) {
   	var name = descendent.label1;
   	var language_code = get_language_code(short_url);
 
-    promises.push(getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendantNames, root_short_url));
+    promises.push(getDirectAncestorsOnly(short_url, allDescendantNames, root_short_url));
   });
 
   Promise.all(promises).then(function() {
@@ -96,7 +46,8 @@ function createDesendantTree(allDescendents, root_short_url) {
   });
 }
 
-function getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendents, root_short_url) {
+// Get the direct ancestors for a given word
+function getDirectAncestorsOnly(short_url, allDescendents, root_short_url) {
 	return new Promise(function(resolve, reject) {
 		let part1 = 'https://etytree-virtuoso.wmflabs.org/sparql?query=define%20sql%3Adescribe-mode%20%22CBD%22%20%20DESCRIBE%20%3Chttp%3A%2F%2F';
 	    let part2 = short_url.substring(7); // remove http:// at beginning of string
@@ -118,9 +69,6 @@ function getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendents, r
 
 	                 if(d.predicate.includes('label')) {
 	                    word_name = d.object;
-	                    //console.log('Word: ' + word_name);
-	                    //addWordName(short_url, word_name);
-
 	                 } else if(d.predicate.includes('etymologicallyRelatedTo')) {
 	                  let ancestor_short_url = d.object;
 	                  etymologicallyRelatedTo.push(d.object);
@@ -153,7 +101,6 @@ function getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendents, r
 			  }
 
 			  addNodeToVizu(nodeItem);
-			  //re_render(short_url);
 
 			  etymologicallyRelatedTo.forEach(function(ancestor_short_url) {
 		  		if(allDescendents.includes(ancestor_short_url)) {
@@ -163,8 +110,6 @@ function getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendents, r
 				      language: language_name
 				    }
 				    addEdgeToVizu(newEdge);
-                  	//add_edge(ancestor_short_url, short_url,  language_name);
-                  	//re_render(short_url);
                   }
 			  });
 	            

@@ -1,17 +1,54 @@
 
+// html div to display the tooltip on node mouse hover
 var div = d3.select("#vizu_svg").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
+
+
+// Variable for the 'do not reset graph on new new word' option
+var noReset = false;
+
+// Variables that keep arrays of the current nodes and edges in the graph
+var currNodes;
+var currEdges;
+var currRoot;
+
+
+var margin = {top: 20, right: 0, bottom: 0, left: 0};
+var width = 1000 - margin.left - margin.right;
+var height = 420 - margin.top - margin.bottom;
+
+var svg = d3.select("#vizu_svg").append("svg")
+	//.attr("width", width + margin.right + margin.left)
+    //.attr("height", height + margin.top + margin.bottom);
+    .attr("id", "svg_container")
+	.attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0 0 " + width + " " + height);
+var inner = svg.append("g");
+	//.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Create the input graph
 var g;
 reset_graph();
 
-function add_node(state, name) {
-	//console.log('ADDING ' + state + " " + name);
-	var existingNodes = g.nodes();
+var render = new dagreD3.render();
+render(inner, g);
 
-	//if(!existingNodes.includes(state)) {
+//inner.style("transform-origin", "50% 50% 0");
+
+var zoom_handler = d3.zoom()
+        .scaleExtent([0.02, 8])
+        //.translateExtent([[0, 0], [width, height]])
+        //.extent([[0, 0], [width, height]])
+    	.on("zoom", zoom_actions);
+zoom_handler(svg);
+
+function zoom_actions(){
+  inner.attr("transform", d3.event.transform); //'scale(' + d3.event.transform.k + ')'
+}
+
+// Add a node to the graph
+function add_node(state, name) {
 	if(!currNodes.map(n => n.short_url).includes(state)) {
 		g.setNode(state, {
 			label: name
@@ -19,6 +56,7 @@ function add_node(state, name) {
 	}
 }
 
+// Add an edge to the graph
 function add_edge(from, to, label_name) {
 	var existingEdges = g.edges().map(e => e.v + e.w);
 
@@ -30,6 +68,7 @@ function add_edge(from, to, label_name) {
 	//}
 }
 
+// Add a cluster (parent node) to the graph
 function add_cluster(cluster) {
 	//var rColor = strToHexColor(cluster);
 	var rColor = 'd3d7e8';
@@ -37,6 +76,7 @@ function add_cluster(cluster) {
 	g.node(cluster).rx = 5;
 }
 
+// Set a cluster (parent node) for a node
 function set_cluster(node, cluster) {
 	g.setParent(node, cluster);
 }
@@ -46,17 +86,16 @@ function set_root_node_style(state) {
 	g.node(state).style = "fill: #f77";
 }
 
+// Set word as second order root (term I invented to describe a node that is a root for a descendant tree)
 function set_second_order_root_node_style(state) {
 	g.node(state).style = "fill: #7f7";
 }
 
+// Style a node with the default styling
 function style_node_default(state) {
 	var node = g.node(state);
 	node.rx = node.ry = 5;
 }
-
-var noReset = false;
-
 
 // Clear the visualization
 function clear() {
@@ -65,6 +104,7 @@ function clear() {
 	currRoot = undefined;
 	reset_graph();
 }
+
 
 function reset_graph() {
 	hide_tooltip();
@@ -81,10 +121,6 @@ function reset_graph() {
 	}
 }
 
-var currNodes;
-var currEdges;
-var currRoot;
-
 // Called on new search entered by user and after creating the initial data strcture
 function add_to_dagre_vizu(nodes, edges, root_node) {
 	if(!noReset) {
@@ -99,7 +135,7 @@ function add_to_dagre_vizu(nodes, edges, root_node) {
 	re_render(root_node);
 }
 
-
+// Add an array of node objects to the vizu
 function addNodesToVizu(nodes) {
 	for(i = 0; i < nodes.length; ++i) {
 		addNodeToVizu(nodes[i]);
@@ -130,6 +166,7 @@ function addNodeToVizu(node) {
 	}
 }
 
+// Add an array of edge objects to the vizu
 function addEdgesToVizu(edges) {
 	for(i = 0; i < edges.length; ++i) {
 		addEdgeToVizu(edges[i]);
@@ -145,6 +182,7 @@ function addEdgeToVizu(edge) {
 	add_edge(edge.source, edge.target, show_clusters ? '' : edge.language);
 }
 
+// Hide the tooltip div
 function hide_tooltip() {
 	div.transition()		
             .duration(150)		
@@ -152,6 +190,7 @@ function hide_tooltip() {
 	
 }
 
+// Render the graph vizu
 function re_render(root_node) {
 	g.graph().transition = function(selection) {
       return selection.transition().duration(1000);
@@ -203,8 +242,7 @@ function re_render(root_node) {
 */
 }
 
-
-
+// Set the listeners for all the nodes (clicks, mouse hover, ...)
 function set_node_listeners() {
 	svg.selectAll("g.node")
 		.on("click", function(id) {
@@ -227,65 +265,16 @@ function set_node_listeners() {
 	    
 }
 
-
-
-function get_node_label_text(name, language_name) {
-	return name;
-	//return name + "\n" + "<span style='font-size:16px'>" + language_name + "</span>";
-}
-
+// Listener for the show cluster checkbox
 function showClustersListener(checkbox) {
 	reset_graph();
 	add_to_dagre_vizu(currNodes, currEdges, currRoot);
 }
 
+// Listener for the no reset checkbox
 function noResetListener(checkbox) {
 	noReset = checkbox.checked;
 }
-
-/*
-
-var svgParentDiv = document.getElementById("cshow_cluster_div");
-var pWidth = svgParentDiv.clientWidth;
-var pHeight = svgParentDiv.clientHeight;
-
-console.log(pWidth + " " + pHeight)
-*/
-
-var margin = {top: 20, right: 0, bottom: 0, left: 0};
-var width = 1000 - margin.left - margin.right;
-var height = 420 - margin.top - margin.bottom;
-
-var svg = d3.select("#vizu_svg").append("svg")
-	//.attr("width", width + margin.right + margin.left)
-    //.attr("height", height + margin.top + margin.bottom);
-    .attr("id", "svg_container")
-	.attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 " + width + " " + height);
-var inner = svg.append("g");
-	//.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-// Run the renderer. This is what draws the final graph.
-var render = new dagreD3.render();
-render(inner, g);
-
-
-/* 
- * ZOOM BEHAVIOUR         
- */
-function zoom_actions(){
-  inner.attr("transform", d3.event.transform); //'scale(' + d3.event.transform.k + ')'
-}
-
-//inner.style("transform-origin", "50% 50% 0");
-
-var zoom_handler = d3.zoom()
-        .scaleExtent([0.02, 8])
-        //.translateExtent([[0, 0], [width, height]])
-        //.extent([[0, 0], [width, height]])
-    	.on("zoom", zoom_actions);
-zoom_handler(svg);
-
 
 function strToHexColor(str) {
 	return intToRGB(hashCode(str));

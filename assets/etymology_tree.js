@@ -108,7 +108,6 @@ function search_root_word(word) {
   treatedWords = [];
   wiktionaryLinkMap = {};
 
-
   search_url(short_url, 0).then(function(result) {
     // executed when collected  data
 
@@ -116,15 +115,12 @@ function search_root_word(word) {
     console.log(equivalentMap);
     console.log(wordNameMap);
 
-    
     treatedWords = [];
     var EN = createNodeAndEdgeList(rootWord);
     var accNodes = EN.accNodess;
     var accEdges = EN.accEdgess;
 
     add_to_dagre_vizu(accNodes, accEdges, short_url);
-
-    //set_from_json_go(jsonTree);
 
   }, function(err) {
     console.log(err);
