@@ -2,7 +2,7 @@
 
 This is the page for our project for the course Data Visualization (COM-430).
 
-### [Link to the visualiztion](https://nevaada.github.io/Project-Etymology-graph/algo)
+### [Link to the visualization](https://nevaada.github.io/Project-Etymology-graph/algo)
 
 ### Group members
 * Christopher Benz
