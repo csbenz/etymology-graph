@@ -16,15 +16,12 @@ description: Etymology Graph
 		<label for="show_cluster_checkbox">Show cluster</label>
 		<input type="checkbox" id="no_reset_checkbox" name="no_reset_checkbox" onchange='noResetListener(this);'>
 		<label for="no_reset_checkbox">Do not reset on new word</label>
-	</div>
-	<div>
+		
 		<button type="button" onclick="goToRootNodeButtonListener()">Center on root node</button>
 	</div>
-
 </div>
 
-<div id="vizu_svg">
-</div>
+<div id="vizu_svg"></div>
 
 
 <script type="text/javascript" src="{{ site.baseurl }}/assets/utils.js"></script>
