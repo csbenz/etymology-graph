@@ -75,32 +75,44 @@ function createDesendantTree(allDescendents, root_short_url) {
 
   var allDescendantNames = allDescendents.map(x => x.descendant1);
 
+  var allDescendantsDict = allDescendents.reduce(function(map, obj) {
+	    map[obj.descendant1] = obj.label1;
+	    return map;
+	}, {});
+
+
   let descendantNodes = [];
   allDescendents.forEach(function(descendent) {
   	var short_url = descendent.descendant1;
   	var name = descendent.label1;
   	var language_code = get_language_code(short_url);
 
-
+/*
     if(!g.nodes().includes(short_url) && short_url != root_short_url) {
     	add_node(short_url, name);
     } else {
     	console.log('Ignored already existing descendant: ' + short_url);
     }
+    */
 
-    getDirectAncestorsOnly(short_url, allDescendantNames).then(function(result) {
-    	console.log('got dir anc for   ' + result);
+    if(!g.nodes().includes(short_url)) {
+	  	add_node(short_url, name);
+	} else {
+	  	console.log('Ignored already existing descendant: ' + short_url);
+	}
+
+    getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendantNames).then(function(result) {
+    	//console.log('got dir anc for   ' + result);
+    	//re_render(root_short_url);
     });
 
-  	re_render(root_short_url);
-
-  	//add_node();
-  	//search_root_short_url(url);
 
   });
+
+  
 }
 
-function getDirectAncestorsOnly(short_url, allDescendents) {
+function getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendents) {
 	return new Promise(function(resolve, reject) {
 		let part1 = 'https://etytree-virtuoso.wmflabs.org/sparql?query=define%20sql%3Adescribe-mode%20%22CBD%22%20%20DESCRIBE%20%3Chttp%3A%2F%2F';
 	    let part2 = short_url.substring(7); // remove http:// at beginning of string
@@ -115,22 +127,29 @@ function getDirectAncestorsOnly(short_url, allDescendents) {
 	          let aa = d3.csvParse(request.responseText);
 
 	          let promisess = [];
+
+	          var word_name_tmp; // TODO get before looping
 	          
 	          aa.forEach(function(d) {
 
 	                 if(d.predicate.includes('label')) {
 	                    let word_name = d.object;
+	                    word_name_tmp = word_name;
 	                    console.log('Word: ' + word_name);
 	                    //addWordName(short_url, word_name);
 
 	                 } else if(d.predicate.includes('etymologicallyRelatedTo')) {
 	                  let ancestor_short_url = d.object;
 	                  console.log('is related to: ' + ancestor_short_url);
-	                  console.log(allDescendents);
+
+	                  
+	                  
 	                  if(allDescendents.includes(ancestor_short_url)) {
-	                  	console.log('Adding edge: ' + ancestor_short_url + ' TO ' + short_url);
-	                  	add_edge(ancestor_short_url, short_url, 'new');
+	                  	let language = languageCodeMap[get_language_code(short_url)];
+	                  	//console.log('Adding edge: ' + ancestor_short_url + ' TO ' + short_url);
+	                  	add_edge(ancestor_short_url, short_url,  language);
 	                  	re_render(short_url);
+	                  	
 	                  } else {
 	                  	console.log('no link');
 	                  }
@@ -147,7 +166,7 @@ function getDirectAncestorsOnly(short_url, allDescendents) {
 	                  //addEquivalent(short_url, equivalentWord);
 	                 } else if(d.predicate.includes('http://www.w3.org/2000/01/rdf-schema#seeAlso')) {
 	                  let wiktionaryLink = d.object;
-	                  //wiktionaryLinkMap[short_url] = wiktionaryLink;
+	                  wiktionaryLinkMap[short_url] = wiktionaryLink;
 	                 }
 	              });
 	            

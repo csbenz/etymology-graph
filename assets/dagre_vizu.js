@@ -8,17 +8,24 @@ var g;
 reset_graph();
 
 function add_node(state, name) {
-	g.setNode(state, {
-		label: name
-	});
-	//g.node(state).label = "<div>aa</div>";
+	var existingNodes = g.nodes();
+
+	if(!existingNodes.includes(state)) {
+		g.setNode(state, {
+			label: name
+		});
+	}
 }
 
 function add_edge(from, to, label_name) {
-	g.setEdge(from, to, {
-		label: label_name,
-		curve: d3.curveBasis
-	});
+	var existingEdges = g.edges().map(e => e.v + e.w);
+
+	if(!existingEdges.includes(from + to) && !existingEdges.includes(to + from)) {
+		g.setEdge(from, to, {
+			label: label_name,
+			curve: d3.curveBasis
+		});
+	}
 }
 
 function add_cluster(cluster) {
@@ -81,10 +88,8 @@ function add_to_dagre_vizu(nodes, edges, root_node) {
 	addNodes(nodes);
 	addEdges(edges);
 
-	
-
 	re_render(root_node);
-	set_node_listeners();
+	//set_node_listeners();
 
 
 }
@@ -125,7 +130,7 @@ function hide_tooltip() {
 
 function re_render(root_node) {
 	g.graph().transition = function(selection) {
-      return selection.transition().duration(500);
+      return selection.transition().duration(1000);
     };
 
      // Reset zoom
@@ -142,6 +147,8 @@ function re_render(root_node) {
 	zoom_handler.on('start', function() {
 		hide_tooltip();
 	})
+
+	set_node_listeners();
 
 	/*
 
@@ -201,7 +208,8 @@ function showClustersListener(checkbox) {
 }
 
 function noResetListener(checkbox) {
-	noReset = checkbox.checked;
+	re_render('');
+	//noReset = checkbox.checked;
 }
 
 /*
