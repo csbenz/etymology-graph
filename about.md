@@ -18,7 +18,7 @@ The lecturer for the course is [Kirell Benzi](https://people.epfl.ch/204172).
 
 ## External Links
 
-The [GitHub repository](https://github.com/Nevaada/Project-Etymology-graph) of the website.
+The [GitHub repository](https://github.com/csbenz/etymology-graph) of the website.
 
 The [Wikimedia project](https://meta.wikimedia.org/wiki/Grants:IEG/A_visual_representation_of_the_etymology_of_words_using_trees) which endpoint we use as data source.
 

@@ -2,12 +2,8 @@
 
 This is the page for our project for the course Data Visualization (COM-430).
 
-### [Link to the visualization](https://nevaada.github.io/Project-Etymology-graph/algo)
+### [Link to the visualization](https://csbenz.github.io/etymology-graph/algo)
 
-### Group members
-* Christopher Benz
-* Pierre Mahmoud-Lamy
-* Nicolas Pradignac
 
 ### Decription
 
