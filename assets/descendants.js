@@ -107,7 +107,7 @@ function getDirectAncestorsOnly(short_url, allDescendents, root_short_url) {
 		  			var newEdge = {
 				      source: ancestor_short_url,
 				      target: short_url,
-				      language: language_name
+				      language:  get_language_name(get_language_code(ancestor_short_url))
 				    }
 				    addEdgeToVizu(newEdge);
                   }

@@ -128,11 +128,6 @@ function add_to_dagre_vizu(nodes, edges, root_node, force_no_reset=false) {
 	if(!force_no_reset && !noReset) {
 		clear();
 	}
-	/*
-	if(rst) {
-		clear();
-	}
-	*/
 
 	currRoot = root_node;
 
