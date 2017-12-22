@@ -61,7 +61,7 @@ function getDirectAncestorsOnly(short_url, allDescendents, root_short_url) {
 
 	          let ancestorsLines = d3.csvParse(request.responseText);
 
-	          var word_name; // TODO get before looping
+	          var word_name;
 	          var etymologicallyRelatedTo = [];
 	          var wiktionaryLink;
 	          
@@ -88,7 +88,7 @@ function getDirectAncestorsOnly(short_url, allDescendents, root_short_url) {
   			  let language_name = get_language_name(language_code);
 
 	          let nodeItem = {};
-			  nodeItem["name"] = word_name;//equs.map(x => wordNameMap[x]).join(", ");
+			  nodeItem["name"] = word_name; //equs.map(x => wordNameMap[x]).join(", ");
 			  nodeItem["short_url"] = short_url;
 			  nodeItem["language_code"] = language_code;
 			  nodeItem["language_name"] = language_name;

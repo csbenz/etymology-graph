@@ -34,17 +34,14 @@ reset_graph();
 var render = new dagreD3.render();
 render(inner, g);
 
-//inner.style("transform-origin", "50% 50% 0");
 
 var zoom_handler = d3.zoom()
         .scaleExtent([0.02, 8])
-        //.translateExtent([[0, 0], [width, height]])
-        //.extent([[0, 0], [width, height]])
     	.on("zoom", zoom_actions);
 zoom_handler(svg);
 
 function zoom_actions(){
-  inner.attr("transform", d3.event.transform); //'scale(' + d3.event.transform.k + ')'
+  inner.attr("transform", d3.event.transform);
 }
 
 // Add a node to the graph
@@ -216,7 +213,7 @@ function re_render(root_node, initial_render=false) {
 		var scale = 0.8;
 
 		zoom_handler.scaleBy(svg, scale);
-		zoom_handler.translateBy(svg, (width*scale/2) - g.node(root_node).x + 200,   (height*scale/2) - (g.node(root_node).y)); //g.node(root_node).y
+		zoom_handler.translateBy(svg, (width*scale/2) - g.node(root_node).x + 200,   (height*scale/2) - (g.node(root_node).y));
 	}
 
 	zoom_handler.on('start', function() {
