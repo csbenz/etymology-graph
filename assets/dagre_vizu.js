@@ -263,7 +263,7 @@ function centerGraphOnPoint(node, delay=500, duration=700) {
 	if(!node){
 		return;
 	}
-	
+
 	function transform_fun() {
 	  return d3.zoomIdentity
 	      .translate((width/2)-g.node(node).x, (height/2)-g.node(node).y);
@@ -289,5 +289,12 @@ function noResetListener(checkbox) {
 function goToRootNodeButtonListener() {
 	centerGraphOnPoint(currRoot, 0);
 	
+}
+
+function selectedExampleListener() {
+	console.log('ex');
+	var select = document.getElementById('wordlist');
+	var word = select.value;
+	get_ancestors(word);
 }
 

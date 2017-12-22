@@ -12,6 +12,16 @@ description: Etymology Graph
 	    </form>
 	</div>
 	<div id="show_cluster_div">
+			
+			   Selected examples:
+			<select name="wordlist"id="wordlist">
+				  <option value="bitcoin">bitcoin</option>
+				  <option value="rhapsody">rhapsody</option>
+				  <option value="dumbledore">dumbledore</option>
+			 	 <option value="algorithm">algorithm</option>
+			</select>
+			<button type="button" onclick="selectedExampleListener()">Search this word!</button>
+		
 		<input type="checkbox" id="show_cluster_checkbox" name="show_cluster_checkbox" onchange='showClustersListener(this);'>
 		<label for="show_cluster_checkbox">Show cluster</label>
 		<input type="checkbox" id="no_reset_checkbox" name="no_reset_checkbox" onchange='noResetListener(this);'>
