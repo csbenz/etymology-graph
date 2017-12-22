@@ -145,7 +145,7 @@ function getDirectAncestorsOnly(short_url, allDescendantsDict, allDescendents, r
 	              });
 
 	          let language_code = get_language_code(short_url);
-  			  let language_name = languageCodeMap[language_code];
+  			  let language_name = get_language_name(language_code);
 
 	          let nodeItem = {};
 			  nodeItem["name"] = word_name;//equs.map(x => wordNameMap[x]).join(", ");

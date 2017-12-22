@@ -11,22 +11,22 @@ function add_node(state, name) {
 	//console.log('ADDING ' + state + " " + name);
 	var existingNodes = g.nodes();
 
-	if(!existingNodes.includes(state)) {
+	//if(!existingNodes.includes(state)) {
 		g.setNode(state, {
 			label: name
 		});
-	}
+	//}
 }
 
 function add_edge(from, to, label_name) {
 	var existingEdges = g.edges().map(e => e.v + e.w);
 
-	if(!existingEdges.includes(from + to) && !existingEdges.includes(to + from)) {
+	//if(!existingEdges.includes(from + to) && !existingEdges.includes(to + from)) {
 		g.setEdge(from, to, {
 			label: label_name,
 			curve: d3.curveBasis
 		});
-	}
+	//}
 }
 
 function add_cluster(cluster) {
@@ -51,7 +51,9 @@ function set_second_order_root_node_style(state) {
 
 function style_node_default(state) {
 	var node = g.node(state);
-  	node.rx = node.ry = 5;
+	if(node) { // TODO otherwise sometimes bug when not loaded
+	  	node.rx = node.ry = 5;
+	}
 }
 
 var noReset = false;

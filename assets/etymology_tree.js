@@ -297,7 +297,7 @@ function createJSONChildDepth(word, depth) {
   let equs = getEquivalents(word);
 
   let language_code = get_language_code(word);
-  let language_name = languageCodeMap[language_code];
+  let language_name = get_language_name(language_code);
 
   let item = {};
   item["name"] = equs.map(x => wordNameMap[x]).join(", ");
@@ -341,13 +341,13 @@ function createNodeAndEdgeListAcc(word, accNodes, accEdges, depth) {
   let equs = getEquivalents(word);
 
   let language_code = get_language_code(word);
-  let language_name = languageCodeMap[language_code];
+  let language_name = get_language_name(language_code);
 
   let nodeItem = {};
   nodeItem["name"] = equs.map(x => wordNameMap[x]).join(", ");
   nodeItem["short_url"] = word;
   nodeItem["language_code"] = language_code;
-  nodeItem["language_name"] = languageCodeMap[language_code];
+  nodeItem["language_name"] = language_name;
   nodeItem["wiktionary_link"] = wiktionaryLinkMap[word];
 
   if(depth == 0){
@@ -370,7 +370,7 @@ function createNodeAndEdgeListAcc(word, accNodes, accEdges, depth) {
     var newEdge = {
       source: ancestor,
       target: word,
-      language: languageCodeMap[get_language_code(ancestor)]
+      language: get_language_name(get_language_code(ancestor))
     }
 
     accEdges.push(newEdge);
@@ -398,9 +398,9 @@ function get_language_code(short_url) {
 }
 
 function get_language_name(language_code) {
-  let tmp = languageCodeMap(language_code);
+  let tmp = languageCodeMap[language_code];
   if(!tmp) {
-    tmp = languageCodeMap(language_code.slice(0,-1));
+    tmp = languageCodeMap[language_code.slice(0,-1)];
   }
 
   return tmp;
