@@ -2,8 +2,8 @@
 layout: post
 title: Process Book
 author: Christopher
-description: Our process book is a PDF file and can be downloaded <a href="datavizu_processbook.pdf" target="_blank">here</a>.
+description: Our process book can be downloaded <a href="datavizu_processbook.pdf" target="_blank">here</a>.
 ---
 
 ## Process book
-Our process book is a PDF file and can be downloaded <a href="datavizu_processbook.pdf" target="_blank">here</a>.
+Our process book can be downloaded <a href="datavizu_processbook.pdf" target="_blank">here</a>.

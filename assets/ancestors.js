@@ -6,8 +6,6 @@ function handleInput(data) {
 
 const MAX_DEPTH = 15;
 
-var rootWord = "";
-
 // List, keeps track of the traversed short_urls
 var traversedWords = [];
 
@@ -23,8 +21,10 @@ var wordNameMap = {};
 // Map of 'tuple' ([array of equivalent words, ancestors])
 var AncestorTree = [];
 
+// Map of wiktionary links
 var wiktionaryLinkMap = {};
 
+// Words that are already treated
 var treatedWords = [];
 
 

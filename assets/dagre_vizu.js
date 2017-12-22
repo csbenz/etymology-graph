@@ -20,8 +20,6 @@ var width = 1000 - margin.left - margin.right;
 var height = 450 - margin.top - margin.bottom;
 
 var svg = d3.select("#vizu_svg").append("svg")
-	//.attr("width", width + margin.right + margin.left)
-    //.attr("height", height + margin.top + margin.bottom);
     .attr("id", "svg_container")
 	.attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0 0 " + width + " " + height);
@@ -56,12 +54,10 @@ function add_node(state, name) {
 function add_edge(from, to, label_name) {
 	var existingEdges = g.edges().map(e => e.v + e.w);
 
-	//if(!existingEdges.includes(from + to) && !existingEdges.includes(to + from)) {
-		g.setEdge(from, to, {
-			label: label_name,
-			curve: d3.curveBasis
-		});
-	//}
+	g.setEdge(from, to, {
+		label: label_name,
+		curve: d3.curveBasis
+	});
 }
 
 // Add a cluster (parent node) to the graph
@@ -112,7 +108,6 @@ function reset_graph() {
 			rankdir: "LR",
 			marginx: 20,
 			marginy: 20
-			//ranksep: 25
 		});
 	}
 }
@@ -125,13 +120,7 @@ function add_to_dagre_vizu(nodes, edges, root_node, force_no_reset=false) {
 		clear();
 	}
 
-	console.log("CURR " + root_node);
-
 	currRoot = root_node;
-
-	console.log('---');
-	console.log(nodes);
-	console.log(edges);
 
 	addNodesToVizu(nodes);
 	addEdgesToVizu(edges);
@@ -200,8 +189,6 @@ function re_render(root_node, initial_render=false) {
       return selection.transition().duration(1000);
     };
 
-     // Reset zoom
-	//zoom_handler.transform(svg, d3.zoomIdentity.scale(1));
 
 	// re-render
 	var render = new dagreD3.render();
